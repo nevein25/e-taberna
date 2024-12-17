@@ -1,6 +1,8 @@
-﻿using Auth.Domain.Model;
+﻿using Auth.Application.Services.Token;
+using Auth.Domain.Model;
 using Auth.Infrastructure.Persistance;
 using Auth.Infrastructure.Seeders;
+using Auth.Infrastructure.Services.Token;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,8 @@ public static class ServiceCollectionExtensions
                  .AddEntityFrameworkStores<AppDbContext>();
 
         services.AddScoped<ISeeder, Seeder>();
+        services.AddScoped<ITokenService, TokenService>();
+
     }
 }
 
