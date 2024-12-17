@@ -1,4 +1,5 @@
 ﻿using Auth.Application.Constants;
+using Auth.Application.CreateUserFactory;
 using Auth.Application.DTOs;
 using Auth.Application.Interfaces;
 using Auth.Application.Services.Token;
@@ -11,11 +12,13 @@ public class AccountService : IAccountService
 {
     private readonly UserManager<User> _userManager;
     private readonly ITokenService _tokenService;
+    private readonly UserFactoryResolver _userFactoryResolver;
 
-    public AccountService(UserManager<User> userManager, ITokenService tokenService)
+    public AccountService(UserManager<User> userManager, ITokenService tokenService, UserFactoryResolver userFactoryResolver)
     {
         _userManager = userManager;
         _tokenService = tokenService;
+        _userFactoryResolver = userFactoryResolver;
     }
     public async Task<Respons<AuthResponseDto>> LoginAsync(LoginDto loginDto)
     {
@@ -67,31 +70,9 @@ public class AccountService : IAccountService
             return response;
         }
 
-        User user = new();
-        if (registerDto.Role.Equals(Roles.Customer, StringComparison.OrdinalIgnoreCase))
-        {
-            user = new Customer
-            {
-                Email = registerDto.Email,
-                UserName = registerDto.Username
-            };
-        }
-        else if (registerDto.Role.Equals(Roles.Seller, StringComparison.OrdinalIgnoreCase))
-        {
-            user = new Seller
-            {
-                Email = registerDto.Email,
-                UserName = registerDto.Username
-            };
-        }
-
-        else
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RoleNotAllowed;
-            response.Errors.Add(RegistrationMessages.RoleNotAllowed);
-            return response;
-        }
+        User user;
+        var factory = _userFactoryResolver.GetFactory(registerDto.Role);
+        user = factory.CreateUser(registerDto.Email, registerDto.Username);
 
         var result = await _userManager.CreateAsync(user, registerDto.Password);
         if (!result.Succeeded)

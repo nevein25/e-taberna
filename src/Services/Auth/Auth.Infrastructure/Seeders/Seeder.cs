@@ -25,18 +25,18 @@ public class Seeder : ISeeder
         if (await _context.Database.CanConnectAsync())
         {
             await SeedRoles();
-            await SeedUsers();
+            //await SeedUsers();
         }
     }
 
     private async Task SeedRoles()
     {
-        var roles = GetRoles();
-
-        foreach (var role in roles)
-            if (!await _context.Roles.AnyAsync(r => r.Name == role))
-                await _roleManager.CreateAsync(new Role { Name = role });
-
+        if (!_context.Roles.Any())
+        {
+            var roles = GetRoles();
+            foreach (var role in roles)
+                    await _roleManager.CreateAsync(new Role { Name = role });
+        }
 
     }
 

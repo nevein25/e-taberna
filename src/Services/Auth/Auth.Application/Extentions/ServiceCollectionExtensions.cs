@@ -1,5 +1,6 @@
 ﻿
 using Auth.Application.ApplicationSettings;
+using Auth.Application.CreateUserFactory;
 using Auth.Application.Interfaces;
 using Auth.Application.Services;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,10 @@ public static class ServiceCollectionExtensions
         services.Configure<TokenSettings>(configuration.GetSection("TokenSettings"));
 
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<UserFactoryResolver>();
+
+        services.AddScoped<IUserFactory, CustomerFactory>();
+        services.AddScoped<IUserFactory, SellerFactory>();
     }
 }
 
