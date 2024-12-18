@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Auth.Infrastructure.Persistance;
 public class AppDbContext : IdentityDbContext<User,
@@ -29,8 +28,6 @@ public class AppDbContext : IdentityDbContext<User,
         ConfigureRelationships(builder);
         ChangeDefaultIdentityTableNames(builder);
         ApplyTPTApproach(builder);
-
-
     }
 
     private static void ConfigureRelationships(ModelBuilder builder)
@@ -56,21 +53,21 @@ public class AppDbContext : IdentityDbContext<User,
 
     private void ChangeDefaultIdentityTableNames(ModelBuilder builder)
     {
-        builder.Entity<User>(u => u.ToTable("Users"));
-        builder.Entity<Role>(r => { r.ToTable(name: "Roles"); });
-        builder.Entity<UserRole>(ur => { ur.ToTable("UserRoles"); });
-        builder.Entity<IdentityUserClaim<int>>(uc => { uc.ToTable("UserClaims"); });
-        builder.Entity<IdentityUserLogin<int>>(ul => { ul.ToTable("UserLogins"); });
-        builder.Entity<IdentityUserToken<int>>(ut => { ut.ToTable("UserTokens"); });
-        builder.Entity<IdentityRoleClaim<int>>(rc => { rc.ToTable("RoleClaims"); });
+        builder.Entity<User>().ToTable("Users");
+        builder.Entity<Role>().ToTable("Roles");
+        builder.Entity<UserRole>().ToTable("UserRoles");
+        builder.Entity<IdentityUserClaim<int>>().ToTable("UserClaims");
+        builder.Entity<IdentityUserLogin<int>>().ToTable("UserLogins");
+        builder.Entity<IdentityUserToken<int>>().ToTable("UserTokens");
+        builder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaims");
 
     }
 
     private void ApplyTPTApproach(ModelBuilder builder)
     {
-        builder.Entity<Admin>().ToTable("Admins");
-        builder.Entity<Seller>().ToTable("Sellers");
-        builder.Entity<Customer>().ToTable("Customers");
+        builder.Entity<Admin>().ToTable("Admins").HasBaseType<User>(); 
+        builder.Entity<Seller>().ToTable("Sellers").HasBaseType<User>();
+        builder.Entity<Customer>().ToTable("Customers").HasBaseType<User>();
     }
 
 }

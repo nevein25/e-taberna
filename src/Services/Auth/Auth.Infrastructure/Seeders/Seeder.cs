@@ -25,7 +25,9 @@ public class Seeder : ISeeder
         if (await _context.Database.CanConnectAsync())
         {
             await SeedRoles();
-            //await SeedUsers();
+            await SeedAdmins();
+            await SeedCustomers();
+            await SeedSellers();
         }
     }
 
@@ -35,52 +37,82 @@ public class Seeder : ISeeder
         {
             var roles = GetRoles();
             foreach (var role in roles)
-                    await _roleManager.CreateAsync(new Role { Name = role });
+                await _roleManager.CreateAsync(new Role { Name = role });
         }
-
     }
 
-    private async Task SeedUsers()
+    private async Task SeedAdmins()
     {
-        if (!_context.Users.Any())
+        if (!_context.Users.Any(u => u is Admin))
         {
-            var users = GetUsers();
-            var password = "TEST@test123";
+            var admins = GetAdmins();
+            await SeedUsers(admins, Roles.Admin);
+        }
+    }
 
-            foreach (var user in users)
+    private async Task SeedCustomers()
+    {
+        if (!_context.Users.Any(u => u is Customer))
+        {
+            var customers = GetCustomers();
+            await SeedUsers(customers, Roles.Customer);
+        }
+    }
+
+    private async Task SeedSellers()
+    {
+        if (!_context.Users.Any(u => u is Seller))
+        {
+            var sellers = GetSellers();
+            await SeedUsers(sellers, Roles.Seller);
+        }
+    }
+
+    private async Task SeedUsers(IEnumerable<User> users, string role)
+    {
+        var password = "TEST@test123";
+
+        foreach (var user in users)
+        {
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
             {
-                await _userManager.CreateAsync(user, password);
-
-                if (user is Admin) await _userManager.AddToRoleAsync(user, Roles.Admin);
-                else if (user is Customer) await _userManager.AddToRoleAsync(user, Roles.Customer);
-                else if (user is Seller) await _userManager.AddToRoleAsync(user, Roles.Seller);
+                await _userManager.AddToRoleAsync(user, role);
             }
         }
-
-
     }
 
     private IList<string> GetRoles()
     {
         return new List<string> { Roles.Admin, Roles.Customer, Roles.Seller };
     }
-    private IList<User> GetUsers()
-    {
-        var users = new List<User>
-    {
-        new Admin { UserName = "Admin1", Email = "admin1@example.com" },
-        new Admin { UserName = "Admin2", Email = "admin2@example.com" },
 
-        new Customer { UserName = "Customer1", Email = "customer1@example.com" },
-        new Customer { UserName = "Customer2", Email = "customer2@example.com" },
-        new Customer { UserName = "Customer3", Email = "customer3@example.com" },
-
-        new Seller { UserName = "Seller1", Email = "seller1@example.com" },
-        new Seller { UserName = "Seller2", Email = "seller2@example.com" },
-        new Seller { UserName = "Seller3", Email = "seller3@example.com" }
-    };
-        return users;
+    private IList<Admin> GetAdmins()
+    {
+        return new List<Admin>
+        {
+            new Admin { UserName = "Admin1", Email = "admin1@example.com" },
+            new Admin { UserName = "Admin2", Email = "admin2@example.com" }
+        };
     }
 
+    private IList<Customer> GetCustomers()
+    {
+        return new List<Customer>
+        {
+            new Customer { UserName = "Customer1", Email = "customer1@example.com" },
+            new Customer { UserName = "Customer2", Email = "customer2@example.com" },
+            new Customer { UserName = "Customer3", Email = "customer3@example.com" }
+        };
+    }
 
+    private IList<Seller> GetSellers()
+    {
+        return new List<Seller>
+        {
+            new Seller { UserName = "Seller1", Email = "seller1@example.com" },
+            new Seller { UserName = "Seller2", Email = "seller2@example.com" },
+            new Seller { UserName = "Seller3", Email = "seller3@example.com" }
+        };
+    }
 }

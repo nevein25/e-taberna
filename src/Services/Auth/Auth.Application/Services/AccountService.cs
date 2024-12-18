@@ -72,7 +72,7 @@ public class AccountService : IAccountService
 
         User user;
         var factory = _userFactoryResolver.GetFactory(registerDto.Role);
-        user = factory.CreateUser(registerDto.Email, registerDto.Username);
+        user = factory.CreateUser(registerDto);
 
         var result = await _userManager.CreateAsync(user, registerDto.Password);
         if (!result.Succeeded)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auth.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241216200449_IdentityTablesAdded")]
+    [Migration("20241218203311_IdentityTablesAdded")]
     partial class IdentityTablesAdded
     {
         /// <inheritdoc />

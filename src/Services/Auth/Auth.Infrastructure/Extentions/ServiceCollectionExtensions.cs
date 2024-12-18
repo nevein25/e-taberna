@@ -13,12 +13,16 @@ public static class ServiceCollectionExtensions
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configration)
     {
-        services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(configration.GetConnectionString("AuthDb")));
 
-        services.AddIdentityCore<User>()
-                 .AddRoles<Role>()
-                 .AddRoleManager<RoleManager<Role>>()
-                 .AddEntityFrameworkStores<AppDbContext>();
+        services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(configration.GetConnectionString("AuthDb")));
+
+
+        services
+           .AddIdentityCore<User>()
+           .AddRoles<Role>()
+           .AddRoleManager<RoleManager<Role>>()
+           .AddSignInManager<SignInManager<User>>()
+           .AddEntityFrameworkStores<AppDbContext>();
 
         services.AddScoped<ISeeder, Seeder>();
         services.AddScoped<ITokenService, TokenService>();
