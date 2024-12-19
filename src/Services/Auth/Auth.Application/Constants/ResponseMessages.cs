@@ -22,3 +22,9 @@ public static class RegistrationMessages
     public const string RoleNotAllowed = "This role is not allowed.";
 }
 
+public static class RequiredFieldsMessages
+{
+    public const string UsernameRequired = "Username is required.";
+    public const string EmailRequired = "Email is required.";
+    public const string PasswordRequired = "Password is required.";
+}

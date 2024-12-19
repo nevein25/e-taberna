@@ -11,18 +11,39 @@ namespace Auth.Application.Services;
 public class AccountService : IAccountService
 {
     private readonly UserManager<User> _userManager;
+    private readonly RoleManager<Role> _roleManager;
+
     private readonly ITokenService _tokenService;
     private readonly UserFactoryResolver _userFactoryResolver;
 
-    public AccountService(UserManager<User> userManager, ITokenService tokenService, UserFactoryResolver userFactoryResolver)
+    public AccountService(UserManager<User> userManager, ITokenService tokenService, UserFactoryResolver userFactoryResolver, RoleManager<Role> roleManager)
     {
         _userManager = userManager;
         _tokenService = tokenService;
         _userFactoryResolver = userFactoryResolver;
+        _roleManager = roleManager;
     }
     public async Task<Respons<AuthResponseDto>> LoginAsync(LoginDto loginDto)
     {
+
         var response = new Respons<AuthResponseDto>();
+
+        if (string.IsNullOrWhiteSpace(loginDto.Username))
+        {
+            response.Status = false;
+            response.Message = LoginMessages.InvalidLogin;
+            response.Errors.Add(RequiredFieldsMessages.UsernameRequired);
+            return response;
+        }
+
+        if (string.IsNullOrWhiteSpace(loginDto.Password))
+        {
+            response.Status = false;
+            response.Message = LoginMessages.InvalidLogin;
+            response.Errors.Add(RequiredFieldsMessages.PasswordRequired);
+            return response;
+        }
+
 
         User? user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
 
@@ -54,6 +75,30 @@ public class AccountService : IAccountService
     {
         var response = new Respons<AuthResponseDto>();
 
+        if (string.IsNullOrWhiteSpace(registerDto.Username))
+        {
+            response.Status = false;
+            response.Message = RegistrationMessages.RegistrationFailed;
+            response.Errors.Add(RequiredFieldsMessages.UsernameRequired);
+            return response;
+        }
+
+        if (string.IsNullOrWhiteSpace(registerDto.Password))
+        {
+            response.Status = false;
+            response.Message = RegistrationMessages.RegistrationFailed;
+            response.Errors.Add(RequiredFieldsMessages.PasswordRequired);
+            return response;
+        }
+
+        if (string.IsNullOrWhiteSpace(registerDto.Email))
+        {
+            response.Status = false;
+            response.Message = RegistrationMessages.RegistrationFailed;
+            response.Errors.Add(RequiredFieldsMessages.EmailRequired);
+            return response;
+        }
+
         if (await UserEmailExists(registerDto.Email))
         {
             response.Status = false;
@@ -67,6 +112,14 @@ public class AccountService : IAccountService
             response.Status = false;
             response.Message = RegistrationMessages.RegistrationFailed;
             response.Errors.Add(RegistrationMessages.UsernameTaken);
+            return response;
+        }
+
+        if (!(await _roleManager.RoleExistsAsync(registerDto.Role)) && registerDto.Role != Roles.Admin)
+        {
+            response.Status = false;
+            response.Message = RegistrationMessages.RegistrationFailed;
+            response.Errors.Add(RegistrationMessages.RoleNotAllowed);
             return response;
         }
 
