@@ -23,7 +23,6 @@ public class UserFactoryResolver
                        .Where(type => typeof(IUserFactory).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                        .Where(type => type.GetCustomAttributes(typeof(RoleAttribute), false).FirstOrDefault() != null);
 
-            var test = factoryTypes.Count();
             foreach (var type in factoryTypes)
             {
                 var attribute = (RoleAttribute)type.GetCustomAttributes(typeof(RoleAttribute), false).First();
@@ -33,12 +32,6 @@ public class UserFactoryResolver
                 if (!_factories.ContainsKey(attribute.RoleName))
                 {
                     _factories[attribute.RoleName] = factoryInstance;
-                }
-                else
-                {
-                    // Handle duplicate roles, maybe log or throw an exception if desired
-                    // For example, log a warning:
-                    Console.WriteLine($"Duplicate factory for role '{attribute.RoleName}' detected. Skipping registration.");
                 }
             }
         }

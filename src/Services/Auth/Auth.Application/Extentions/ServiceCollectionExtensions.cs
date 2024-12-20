@@ -17,8 +17,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<UserFactoryResolver>();
 
-        services.AddScoped<IUserFactory, CustomerFactory>();
-        services.AddScoped<IUserFactory, SellerFactory>();
     }
 }
 
