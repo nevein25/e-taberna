@@ -6,11 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.RegisterServices(builder.Configuration);
+
+
+builder.Services.RegisterServices(builder.Configuration, Assembly.GetExecutingAssembly());
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 
 
 var app = builder.Build();
+app.MapEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
