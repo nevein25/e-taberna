@@ -64,7 +64,9 @@ public class AccountService : IAccountService
             return response;
         }
 
-        var token = await _tokenService.GenerateTokenAsync(user);
+        var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+        var token = await _tokenService.GenerateTokenAsync(user, role!);
         response.Status = true;
         response.Message = LoginMessages.LoginSuccess;
         response.Data = new AuthResponseDto(token);
@@ -147,7 +149,7 @@ public class AccountService : IAccountService
 
 
 
-        var token = await _tokenService.GenerateTokenAsync(user);
+        var token = await _tokenService.GenerateTokenAsync(user, registerDto.Role);
         response.Status = true;
         response.Message = RegistrationMessages.RegistrationSuccess;
         response.Data = new AuthResponseDto(token);

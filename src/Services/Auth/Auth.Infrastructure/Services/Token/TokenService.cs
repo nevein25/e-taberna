@@ -20,13 +20,14 @@ public class TokenService : ITokenService
         _userManager = userManager;
     }
 
-    public async Task<string> GenerateTokenAsync(User user)
+    public async Task<string> GenerateTokenAsync(User user, string Role)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenSettings.Key));
 
         var claims = new List<Claim> {
             new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Name, user.UserName!)
+            new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
+            new Claim(ClaimTypes.Role, Role)
         };
 
         var roles = await _userManager.GetRolesAsync(user);
@@ -38,7 +39,9 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.Now.AddDays(_tokenSettings.ExpiryInDays),
-            SigningCredentials = creds
+            SigningCredentials = creds,
+            Audience = _tokenSettings.Audience,
+            Issuer = _tokenSettings.Issuer
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

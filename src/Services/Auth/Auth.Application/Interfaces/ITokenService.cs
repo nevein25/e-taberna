@@ -3,5 +3,5 @@
 namespace Auth.Application.Services.Token;
 public interface ITokenService
 {
-    Task<string> GenerateTokenAsync(User user);
+    Task<string> GenerateTokenAsync(User user, string Role);
 }
