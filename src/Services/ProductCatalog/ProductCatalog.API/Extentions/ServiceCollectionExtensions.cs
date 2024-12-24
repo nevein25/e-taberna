@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using ProductCatalog.API.ApplicationSettings;
 using ProductCatalog.API.Persistance;
 using ProductCatalog.API.Seeders;
 using System.Reflection;
@@ -21,6 +22,10 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<ISeeder, Seeder>();
 
+        services.Configure<TokenSettings>(configration.GetSection("TokenSettings"));
+
+        services.AddAuthentication();
+        services.AddAuthorization();
     }
 }
 

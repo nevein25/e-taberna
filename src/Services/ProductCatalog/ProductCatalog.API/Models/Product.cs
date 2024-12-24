@@ -8,4 +8,6 @@ public class Product
     public string ImageFile { get; set; } = default!;
     public decimal Price { get; set; }
     public Category Category { get; set; } = new();
+    public int SellerId { get; set; }
+
 }

@@ -485,4 +485,4 @@ $RECYCLE.BIN/
 
 .vs
 
-src/services/Auth/Auth.API/appsettings*
+src/services/**/appsettings*
