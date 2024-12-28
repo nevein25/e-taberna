@@ -485,5 +485,5 @@ $RECYCLE.BIN/
 
 .vs
 
-src/services/**/appsettings*
+src/services/**/appsettings*.json
 src/.editorconfig
