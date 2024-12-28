@@ -19,5 +19,9 @@ public static class ServiceCollectionExtensions
 
 
 
+        services.AddScoped<ISeeder, Seeder>();
+        services.Configure<TokenSettings>(configuration.GetSection("TokenSettings"));
+        services.AddAuthentication();
+        services.AddAuthorization();
     }
 }
