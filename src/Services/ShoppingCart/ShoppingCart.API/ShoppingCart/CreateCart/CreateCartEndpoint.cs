@@ -21,8 +21,8 @@ public class CreateCartEndpoint : ICarterModule
         {
             CreateCartCommand createCartCommand = cart.Adapt<CreateCartCommand>();
 
-
-            CreatCartResult result = await sender.Send(createCartCommand);// triggering the handler
+            // if validation fail,  validation exception will be thrown and not proceeding to actual business logic., before reaching handler
+            CreateCartResult result = await sender.Send(createCartCommand);// triggering the handler
 
             CreateCartResponse response = result.Adapt<CreateCartResponse>();
 

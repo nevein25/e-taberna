@@ -1,7 +1,6 @@
 ﻿using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ShoppingCart.API.Models;
 using ShoppingCart.API.Presestance;
 
 namespace ShoppingCart.API.ShoppingCart.GetCart;

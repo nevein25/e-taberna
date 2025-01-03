@@ -1,6 +1,8 @@
 ﻿using Carter;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.ApplicationSettings;
+using ShoppingCart.API.Behaviors;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.Seeders;
 using System.Reflection;
@@ -14,7 +16,13 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("CartDb")));
 
 
-        services.AddMediatR(opt => opt.RegisterServicesFromAssembly(assembly));
+        services.AddMediatR(opt =>
+        {
+            opt.RegisterServicesFromAssembly(assembly);
+            opt.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
+        });
+        services.AddValidatorsFromAssembly(assembly);
         services.AddCarter();
 
 

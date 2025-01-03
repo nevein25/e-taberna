@@ -18,5 +18,12 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<CartItem>().Property(c => c.Price).HasColumnType("decimal(18,2)");
+
+        modelBuilder.Entity<Cart>()
+            .HasMany(c => c.CartItems)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
+
+
     }
 }
