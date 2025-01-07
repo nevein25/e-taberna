@@ -5,6 +5,7 @@ using ShoppingCart.API.ApplicationSettings;
 using ShoppingCart.API.Behaviors;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.Seeders;
+using ShoppingCart.API.ShoppingCart.ProductService;
 using System.Reflection;
 
 namespace ShoppingCart.API.Extensions;
@@ -32,5 +33,12 @@ public static class ServiceCollectionExtensions
         services.Configure<TokenSettings>(configuration.GetSection("TokenSettings"));
         services.AddAuthentication();
         services.AddAuthorization();
+
+        var productUrl = configuration["ServiceUrls:ProductCatalogAPI"] ?? throw new Exception("Can not ProductCatalogAPI find in the appsettings");
+    
+        services.AddHttpClient<IProductApiService, ProductApiService>(client =>
+        {
+            client.BaseAddress = new Uri(productUrl);
+        });
     }
 }

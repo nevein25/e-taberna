@@ -36,7 +36,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandler();
+app.UseExceptionHandler(options => { });
+
 
 var scoped = app.Services.CreateScope();
 var seeder = scoped.ServiceProvider.GetRequiredService<ISeeder>();
