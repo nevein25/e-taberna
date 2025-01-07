@@ -1,14 +1,11 @@
 ﻿using FluentValidation;
-using Mapster;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ProductCatalog.API.Constants;
 using ProductCatalog.API.Endpoints;
 using ProductCatalog.API.Extentions;
 using ProductCatalog.API.Models;
 using ProductCatalog.API.Persistance;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace ProductCatalog.API.Products.UpdateProduct;

@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace ProductCatalog.API.Products.CreateProduct;
 
-public record CreateProductRequest(string Name, string Description, string ImageFile, decimal Price, string CategoryName, int SellerId);
+public record CreateProductRequest(string Name, string Description, string ImageFile, decimal Price, string CategoryName, int Quantity, int SellerId);
 public record CreateProductResponse(int Id);
 
 
@@ -24,6 +24,7 @@ public class CreateProductRequestValidator : AbstractValidator<CreateProductRequ
         RuleFor(p => p.CategoryName).NotEmpty().WithMessage("Category is required");
         RuleFor(p => p.ImageFile).NotEmpty().WithMessage("ImageFile is required");
         RuleFor(p => p.Price).GreaterThan(0).WithMessage("Price must be greater than 0");
+        RuleFor(p => p.Quantity).GreaterThan(0).WithMessage("Quantity must be greater than 0");
     }
 }
 
