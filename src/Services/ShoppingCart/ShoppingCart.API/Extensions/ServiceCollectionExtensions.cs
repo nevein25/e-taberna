@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
         {
             opt.RegisterServicesFromAssembly(assembly);
             opt.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            opt.AddOpenBehavior(typeof(LoggingBehavior<,>));
 
         });
         services.AddValidatorsFromAssembly(assembly);
