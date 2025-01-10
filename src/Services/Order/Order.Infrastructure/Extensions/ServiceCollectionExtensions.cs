@@ -9,5 +9,8 @@ public static class ServiceCollectionExtensions
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("OrderDb")));
+
+        services.AddAuthentication();
+        services.AddAuthorization();
     }
 }
