@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -10,8 +10,10 @@ public static class WebApplicationBuilderExtentions
 {
     public static WebApplicationBuilder AddJwtAuthentication(this WebApplicationBuilder builder)
     {
-        var tokenSettings = builder.Services.BuildServiceProvider()
-            .GetRequiredService<IOptions<TokenSettings>>().Value;
+        //var tokenSettings = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<TokenSettings>>().Value;
+        var tokenSettingsSection = builder.Configuration.GetSection("TokenSettings");
+        builder.Services.Configure<TokenSettings>(tokenSettingsSection);
+        var tokenSettings = tokenSettingsSection.Get<TokenSettings>() ?? throw new Exception("Can not find TokenSettings in the appsettings");
 
         var key = Encoding.ASCII.GetBytes(tokenSettings.Key);
 
