@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Order.Infrastructure.Settings;
 using System.Text;
 
 namespace Order.Infrastructure.Extensions;

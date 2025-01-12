@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: Validator
-
-using FluentValidation;
+﻿using FluentValidation;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +7,6 @@ using ShoppingCart.API.Extentions;
 using ShoppingCart.API.Models;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.ShoppingCart.ProductService;
-using System.Security.Claims;
 
 namespace ShoppingCart.API.ShoppingCart.CreateCart;
 

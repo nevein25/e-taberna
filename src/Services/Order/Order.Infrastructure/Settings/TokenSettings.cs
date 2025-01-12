@@ -1,4 +1,4 @@
-﻿namespace Order.Infrastructure;
+﻿namespace Order.Infrastructure.Settings;
 public class TokenSettings
 {
     public string Key { get; set; } = default!;
