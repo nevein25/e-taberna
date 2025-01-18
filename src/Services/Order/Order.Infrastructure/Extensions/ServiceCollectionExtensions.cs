@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("OrderDb")));
+        services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
         services.AddAuthentication();
         services.AddAuthorization();
@@ -21,9 +22,12 @@ public static class ServiceCollectionExtensions
         var stripeSection = config.GetSection("StripeConfiguration");
         services.Configure<StripeAppConfigration>(stripeSection);
         var tokenCon = stripeSection.Get<StripeAppConfigration>() ?? throw new Exception("Can not find StripeConfiguration in the appsettings");
+    
         StripeConfiguration.ApiKey = tokenCon.SecretKey;
         services.AddScoped<IPaymentService, StripeService>();
         services.AddSingleton<SessionService>();
         services.AddSingleton<PaymentIntentService>();
+
+
     }
 }

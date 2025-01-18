@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Order.Application.Payments.Interfaces;
 using Order.Domain.Models;
 
 namespace Order.Infrastructure.Persistence;
-public class AppDbContext : DbContext
+public class AppDbContext : DbContext, IAppDbContext
 {
     public DbSet<Product> Products { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }

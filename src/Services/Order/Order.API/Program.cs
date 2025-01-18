@@ -1,4 +1,7 @@
+using Order.Application.Extensions;
 using Order.Infrastructure.Extensions;
+using Order.SharedKernel.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(Assembly.GetExecutingAssembly());
+builder.Services.AddCQRS(typeof(Order.Application.Orders.Commands.CreateOrderCommand).Assembly);
 builder.AddJwtAuthentication();
 
 
