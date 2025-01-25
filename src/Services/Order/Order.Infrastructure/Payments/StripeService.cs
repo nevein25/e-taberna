@@ -1,5 +1,7 @@
-﻿using Order.Application.Payments.DTOs;
+﻿using Order.Application.Orders.DTOs;
+using Order.Application.Payments.CreatePayments.DTOs;
 using Order.Application.Payments.Interfaces;
+using Order.Application.Payments.ValidatePayments.DTOs;
 using Stripe;
 using Stripe.Checkout;
 
@@ -17,7 +19,6 @@ public class StripeService : IPaymentService
     }
     public StripeResponseDto CreateSession(StripeRequestDto stripeRequest)
     {
-        // TODO: store sessionId in the database, so we can provide a refund or tracking if the payment was successful.
         var options = BuildSessionOptions(stripeRequest);
 
         AddLineItemsToSession(options, stripeRequest.Order.OrderItems);
@@ -26,17 +27,15 @@ public class StripeService : IPaymentService
 
         return new StripeResponseDto()
         {
-            StripeSessionId = session.Id,
-            SessionUrl = session.Url
+            SessionId = session.Id,
+            SessionUrl = session.Url,
         };
     }
-
-    public bool IsPaymentSuccessful(string stripeSessionId)
+    public PaymentIntentDto GetPaymentIntent(string stripeSessionId)
     {
-
         Session session = _sessionService.Get(stripeSessionId);
-        PaymentIntent paymentIntent = _paymentIntentService.Get(session.PaymentIntentId);
-        return paymentIntent.Status == "succeeded";
+        var paymentIntent = _paymentIntentService.Get(session.PaymentIntentId);
+        return new PaymentIntentDto() { Id = session.Id, Status = paymentIntent.Status };
     }
 
     private SessionCreateOptions BuildSessionOptions(StripeRequestDto stripeRequest)

@@ -43,7 +43,7 @@ namespace Order.Infrastructure.Migrations
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

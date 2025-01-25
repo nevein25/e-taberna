@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Application.Interfaces;
 using Order.Application.Payments.Interfaces;
 using Order.Infrastructure.Payments;
 using Order.Infrastructure.Persistence;
@@ -28,6 +29,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<SessionService>();
         services.AddSingleton<PaymentIntentService>();
 
+        services.AddScoped<IPaymentStatusMapper, PaymentStatusMapper>();
 
     }
 }

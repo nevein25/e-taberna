@@ -4,8 +4,10 @@ using Order.Application.Constants;
 using Order.Application.Extentions;
 using Order.Application.Orders.Commands;
 using Order.Application.Orders.DTOs;
+using Order.Application.Payments.CreatePayments.Commands;
+using Order.Application.Payments.ValidatePayments.Commands;
+using Order.Application.Payments.ValidatePayments.DTOs;
 using Order.SharedKernel.Messaging;
-using Order.SharedKernel.Results;
 
 namespace Order.API.Controllers;
 [Route("api/[controller]")]
@@ -34,5 +36,32 @@ public class OrdersController : ControllerBase
 
         return BadRequest(result.Error);
 
+    }
+
+
+
+    [HttpPost("create-session")]
+    public async Task<IActionResult> CreatePaymentSession(PaymentRequestDto payment)
+    {
+        var command = new PaymentCommand(payment);
+        var result = await _sender.Send(command);
+
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+
+
+        return Ok(result);
+    }
+
+    [HttpPost("validate-payment")]
+    public async Task<IActionResult> ValidatePayment(ValidatePaymentRequestDto request)
+    {
+        var command = new ValidatePaymentCommand(request);
+        var result = await _sender.Send(command);
+
+        if (result.IsFailure)
+            return BadRequest(result.Error);
+
+        return Ok(result);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Order.Domain.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Order.Domain.Models;
 public class Order
@@ -6,7 +7,10 @@ public class Order
     public int Id { get; set; }
     public int CustomerId { get; set; }
     public string Address { get; set; } = default!;
-    public OrderStatus Status { get; set; } = OrderStatus.Pending;
+    public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+
+    [Column(TypeName = "nvarchar(50)")]
+    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.RequiresPaymentMethod;
     public DateTime OrderTime { get; set; }
 
 
@@ -15,4 +19,9 @@ public class Order
     {
         get => OrderItems.Sum(oi => oi.Product.Price * oi.Product.Quantity);
     }
+
+    public string? StripePaymentIntentId { get; set; } // The payment intent ID gets generated once the checkout is done.
+                                                       //so we can provide a refund or tracking if the payment was successful.
+
+    public string? StripeSessionId { get; set; }
 }

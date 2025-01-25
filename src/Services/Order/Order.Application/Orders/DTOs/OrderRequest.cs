@@ -16,8 +16,5 @@ public class OrderRequest
         get => OrderItems.Sum(oi => oi.Product.Price * oi.Product.Quantity);
     }
 
-
-    //public string PaymentIntentId { get; set; } = default!;
-    //public string StripeSessionId { get; set; } = default!;
 }
 

@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using Order.Application.Payments.Interfaces;
+using Order.Application.Interfaces;
 using Order.SharedKernel.CQRS;
 using Order.SharedKernel.Results;
 

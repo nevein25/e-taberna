@@ -6,7 +6,7 @@ public static class ClaimsPrincipalExtensions
 {
     public static int GetLoggedInUserId(this ClaimsPrincipal user)
     {
-        return int.TryParse(user?.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId) ? userId : throw new InvalidOperationException("Role is Id in the claims."); ;
+        return int.TryParse(user?.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId) ? userId : throw new InvalidOperationException("UserId is missing in the claims."); ;
     }
 
     public static string GetLoggedInUserRole(this ClaimsPrincipal user)

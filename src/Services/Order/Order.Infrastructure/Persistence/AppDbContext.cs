@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Order.Application.Payments.Interfaces;
+using Order.Application.Interfaces;
 using Order.Domain.Models;
 
 namespace Order.Infrastructure.Persistence;
@@ -20,6 +20,12 @@ public class AppDbContext : DbContext, IAppDbContext
         builder.Entity<Product>()
                .Property(p => p.Price)
                .HasPrecision(18, 2);
+
+        builder.Entity<Order.Domain.Models.Order>()
+               .Property(o => o.PaymentStatus)
+               .HasConversion<string>();
+
+
 
     }
 }
