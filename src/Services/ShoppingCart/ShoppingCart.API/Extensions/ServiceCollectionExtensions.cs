@@ -1,4 +1,6 @@
-﻿using Carter;
+﻿using BuildingBlocks.Messaging.Configurations;
+using BuildingBlocks.Messaging.MessageBuses;
+using Carter;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.ApplicationSettings;
@@ -40,5 +42,9 @@ public static class ServiceCollectionExtensions
         {
             client.BaseAddress = new Uri(productUrl);
         });
+
+        services.Configure<RabbitMQConfigurations>(configuration.GetSection(nameof(RabbitMQConfigurations)));
+
+        services.AddSingleton<IMessageBus, RabbitMQMessageBus>();
     }
 }

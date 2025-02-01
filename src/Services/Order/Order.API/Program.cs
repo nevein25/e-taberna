@@ -10,8 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication(Assembly.GetExecutingAssembly());
+var config = builder.Configuration;
+builder.Services.AddInfrastructure(config);
+builder.Services.AddApplication(Assembly.GetExecutingAssembly(), config);
 builder.Services.AddCQRS(typeof(Order.Application.Orders.Commands.CreateOrderCommand).Assembly);
 builder.AddJwtAuthentication();
 

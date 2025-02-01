@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using BuildingBlocks.Messaging.MessageBuses;
+using FluentValidation;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -43,15 +44,17 @@ internal class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCart
     private readonly AppDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IProductApiService _productService;
+    private readonly IMessageBus _messageBus;
 
     //private readonly IValidator<CreateCartCommand> _validator;
 
-    public CreateCartHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService
+    public CreateCartHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService, IMessageBus messageBus
                 /* , IValidator<CreateCartCommand> validator*/)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;
         _productService = productService;
+        _messageBus = messageBus;
         //_validator = validator;
     }
 
@@ -64,7 +67,7 @@ internal class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCart
         {
             throw new ValidationException(errors.FirstOrDefault());
         }*/
-
+        await _messageBus.PublishToQueueAsync(command, "myQueueName");
         int? userId = _httpContextAccessor.GetLoggedInUserId();
 
         var userCart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
