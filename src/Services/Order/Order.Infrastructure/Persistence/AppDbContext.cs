@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Order.Application.Interfaces;
 using Order.Domain.Models;
 
@@ -20,6 +21,13 @@ public class AppDbContext : DbContext, IAppDbContext
         builder.Entity<Product>()
                .Property(p => p.Price)
                .HasPrecision(18, 2);
+
+        builder.Entity<Product>()
+           .Property(p => p.Id)
+           .ValueGeneratedNever()
+           .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+
+
 
         builder.Entity<Order.Domain.Models.Order>()
                .Property(o => o.PaymentStatus)
