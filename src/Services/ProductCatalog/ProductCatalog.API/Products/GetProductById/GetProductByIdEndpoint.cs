@@ -13,13 +13,12 @@ public class GetProductByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/products/{id}", async (int id, AppDbContext context) =>
+        app.MapGet("api/products/{id}", async (int id, GetProductByIdHandler handler) =>
         {
-            var product = await context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.Id == id);
-            if (product is null) return Results.NotFound();
-
-            var productResponse = product.Adapt<GetProductByIdResponse>();
-            return Results.Ok(productResponse);
+            var response = await handler.Handle(id);
+            return response is null
+                ? Results.NotFound()
+                : Results.Ok(response);
 
 
         }).WithTags(nameof(Product))

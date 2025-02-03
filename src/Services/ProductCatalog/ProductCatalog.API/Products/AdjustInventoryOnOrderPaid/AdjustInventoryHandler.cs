@@ -1,14 +1,15 @@
 ﻿using BuildingBlocks.Messaging.Events;
 using Microsoft.EntityFrameworkCore;
+using ProductCatalog.API.Interfaces;
 using ProductCatalog.API.Persistance;
 
 namespace ProductCatalog.API.Products.AdjustInventoryOnOrderPaid;
 
 public class AdjustInventoryHandler
 {
-    private readonly AppDbContext _context;
+    private readonly IAppDbContext _context;
 
-    public AdjustInventoryHandler(AppDbContext context)
+    public AdjustInventoryHandler(IAppDbContext context)
     {
         _context = context;
     }

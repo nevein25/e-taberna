@@ -16,18 +16,12 @@ public class GetProductsByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/products", async (int[] ids, AppDbContext context) =>
+        app.MapGet("api/products", async (int[] ids, GetProductsByIdHandler handler) =>
         {
-            var products = await context.Products
-                .Include(p => p.Category)
-                .Where(p => ids.Contains(p.Id))
-                .ToListAsync();
-
-            if (!products.Any()) return Results.NotFound();
-
-            var productResponses = products.Select(product => product.Adapt<GetProductByIdResponse>()).ToList();
-
-            return Results.Ok(new GetProductsByIdResponse(productResponses));
+            var response = await handler.Handle(ids);
+            return response?.Products.Any() == true
+                ? Results.Ok(response)
+                : Results.NotFound();
         })
         .WithTags(nameof(Product))
         .ProducesValidationProblem(StatusCodes.Status404NotFound)
