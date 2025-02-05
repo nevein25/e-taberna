@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.Exceptions;
 using ShoppingCart.API.Extentions;
 using ShoppingCart.API.Models;
+using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.ShoppingCart.ProductService;
 
@@ -41,14 +42,14 @@ public class CreateCartItemValidator : AbstractValidator<CreateCartItem>
 
 internal class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCartResult>
 {
-    private readonly AppDbContext _context;
+    private readonly IAppDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IProductApiService _productService;
     private readonly IMessageBus _messageBus;
 
     //private readonly IValidator<CreateCartCommand> _validator;
 
-    public CreateCartHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService, IMessageBus messageBus
+    public CreateCartHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService, IMessageBus messageBus
                 /* , IValidator<CreateCartCommand> validator*/)
     {
         _context = context;
@@ -100,7 +101,7 @@ internal class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCart
             cartItems.Add(item);
         }
         mappedCart.CartItems = cartItems;
-        _context.Add(mappedCart);
+        _context.Carts.Add(mappedCart);
         await _context.SaveChangesAsync(cancellationToken);
 
         return new CreateCartResult(mappedCart.Id);

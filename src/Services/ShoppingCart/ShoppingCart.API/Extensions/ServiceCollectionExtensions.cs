@@ -5,6 +5,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.ApplicationSettings;
 using ShoppingCart.API.Behaviors;
+using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.Seeders;
 using ShoppingCart.API.ShoppingCart.DeleteCart;
@@ -17,7 +18,7 @@ public static class ServiceCollectionExtensions
 {
     public static void RegisterServices(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
     {
-        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("CartDb")));
+        services.AddDbContext<IAppDbContext, AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("CartDb")));
 
 
         services.AddMediatR(opt =>
@@ -38,7 +39,7 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
 
         var productUrl = configuration["ServiceUrls:ProductCatalogAPI"] ?? throw new Exception("Can not ProductCatalogAPI find in the appsettings");
-    
+
         services.AddHttpClient<IProductApiService, ProductApiService>(client =>
         {
             client.BaseAddress = new Uri(productUrl);
@@ -50,6 +51,6 @@ public static class ServiceCollectionExtensions
 
         services.AddHostedService<DeleteCartOnOrderPaidConsumer>();
 
-        services.AddScoped<ICartDeletionService, CartDeletionService>();    
+        services.AddScoped<ICartDeletionService, CartDeletionService>();
     }
 }

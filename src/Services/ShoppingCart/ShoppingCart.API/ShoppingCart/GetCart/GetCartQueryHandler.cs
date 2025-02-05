@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 
 namespace ShoppingCart.API.ShoppingCart.GetCart;
@@ -11,9 +12,9 @@ public record GetCartResult(List<GetCartItemResult> CartItems);
 public record GetCartItemResult(int ProductId, string ProductName, decimal Price, int Quantity);
 public class GetCartQueryHandler : IRequestHandler<GetCartQuery, GetCartResult>
 {
-    private readonly AppDbContext _context;
+    private readonly IAppDbContext _context;
 
-    public GetCartQueryHandler(AppDbContext context)
+    public GetCartQueryHandler(IAppDbContext context)
     {
         _context = context;
     }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.Exceptions;
 using ShoppingCart.API.Extentions;
 using ShoppingCart.API.Models;
+using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.ShoppingCart.ProductService;
 
@@ -17,11 +18,11 @@ public record UpdateCartItem(int ProductId, int Quantity);
 public record UpdateCartResult(bool IsSuccessful);
 public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartResult>
 {
-    private readonly AppDbContext _context;
+    private readonly IAppDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IProductApiService _productService;
 
-    public UpdateCartHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService)
+    public UpdateCartHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

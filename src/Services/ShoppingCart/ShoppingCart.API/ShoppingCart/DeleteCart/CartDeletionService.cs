@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.Extentions;
+using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 
 namespace ShoppingCart.API.ShoppingCart.DeleteCart;
@@ -11,9 +12,9 @@ public interface ICartDeletionService
 
 public class CartDeletionService : ICartDeletionService
 {
-    private readonly AppDbContext _context;
+    private readonly IAppDbContext _context;
 
-    public CartDeletionService(AppDbContext context)
+    public CartDeletionService(IAppDbContext context)
     {
         _context = context;
     }
