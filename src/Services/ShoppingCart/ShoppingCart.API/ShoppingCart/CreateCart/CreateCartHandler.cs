@@ -67,7 +67,6 @@ internal class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCart
         {
             throw new ValidationException(errors.FirstOrDefault());
         }*/
-        await _messageBus.PublishToQueueAsync(command, "myQueueName");
         int? userId = _httpContextAccessor.GetLoggedInUserId();
 
         var userCart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);

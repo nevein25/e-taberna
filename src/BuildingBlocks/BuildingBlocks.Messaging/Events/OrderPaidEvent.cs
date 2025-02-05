@@ -2,6 +2,7 @@
 public class OrderPaidEvent
 {
     public int OrderId { get; set; }
+    public int CustomerId { get; set; }
     public List<PaidProduct> Products { get; set; } = new();
 }
 

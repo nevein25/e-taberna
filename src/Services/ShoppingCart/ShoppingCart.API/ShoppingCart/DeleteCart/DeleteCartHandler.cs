@@ -12,12 +12,12 @@ public record DeleteCartResult(bool IsSuccess);
 
 public class DeleteCartHandler : IRequestHandler<DeleteCartCommand, DeleteCartResult>
 {
-    private readonly AppDbContext _context;
+    private readonly ICartDeletionService _cartDeletionService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public DeleteCartHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+    public DeleteCartHandler(ICartDeletionService cartDeletionService, IHttpContextAccessor httpContextAccessor)
     {
-        _context = context;
+        _cartDeletionService = cartDeletionService;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -25,16 +25,13 @@ public class DeleteCartHandler : IRequestHandler<DeleteCartCommand, DeleteCartRe
     {
         try
         {
-
             int? userId = _httpContextAccessor.GetLoggedInUserId();
-            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
-            if (cart is null) return new DeleteCartResult(false);
+            if(userId is null) return new DeleteCartResult(false);
 
-            _context.Remove(cart);
-            await _context.SaveChangesAsync();
-            return new DeleteCartResult(true);
+            return await _cartDeletionService.DeleteCartAsync((int)userId, cancellationToken);
+
         }
-        catch (Exception ex)
+        catch
         {
             throw;
         }

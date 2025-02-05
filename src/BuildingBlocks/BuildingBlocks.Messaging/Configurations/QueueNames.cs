@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BuildingBlocks.Messaging.Configurations;
+﻿namespace BuildingBlocks.Messaging.Configurations;
 public static class QueueNames
 {
-    public const string OrderPaymentSuccess = "order.payment.success";
+    public const string ProductOrderPaymentSuccess = "product.order.payment.success";
+    public const string CartOrderPaymentSuccess = "cart.order.payment.success";
+}
+public static class ExchangeNames
+{
+    public const string OrderEvents = "OrderEvents";
 }

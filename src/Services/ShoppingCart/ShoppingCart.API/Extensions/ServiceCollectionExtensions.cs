@@ -7,6 +7,7 @@ using ShoppingCart.API.ApplicationSettings;
 using ShoppingCart.API.Behaviors;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.Seeders;
+using ShoppingCart.API.ShoppingCart.DeleteCart;
 using ShoppingCart.API.ShoppingCart.ProductService;
 using System.Reflection;
 
@@ -46,5 +47,9 @@ public static class ServiceCollectionExtensions
         services.Configure<RabbitMQConfigurations>(configuration.GetSection(nameof(RabbitMQConfigurations)));
 
         services.AddSingleton<IMessageBus, RabbitMQMessageBus>();
+
+        services.AddHostedService<DeleteCartOnOrderPaidConsumer>();
+
+        services.AddScoped<ICartDeletionService, CartDeletionService>();    
     }
 }

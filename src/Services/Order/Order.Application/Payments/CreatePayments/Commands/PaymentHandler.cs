@@ -21,9 +21,6 @@ public class PaymentHandler : ICommandHandler<PaymentCommand, PaymentResponseDto
 
     public async Task<Result<PaymentResponseDto>> Handle(PaymentCommand command, CancellationToken cancellationToken)
     {
-        // TODO
-        // change inventory (product service)
-        // delete cart
         var order = await _context.Orders.Include(o => o.OrderItems)
                                           .ThenInclude(oi => oi.Product)
                                           .FirstOrDefaultAsync(o => o.Id == command.Payment.OrderId);

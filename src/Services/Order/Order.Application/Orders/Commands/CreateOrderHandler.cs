@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Order.Application.Interfaces;
 using Order.SharedKernel.CQRS;
 using Order.SharedKernel.Results;
@@ -27,9 +28,31 @@ public class CreateOrderHandler : ICommandHandler<CreateOrderCommand, CreateOrde
 
         var order = command.Order.Adapt<Order.Domain.Models.Order>();
 
+
+        var productIds = order.OrderItems.Select(oi => oi.Product.Id).ToList();
+
+        var existingProducts = await _context.Products
+            .Where(p => productIds.Contains(p.Id))
+            .ToDictionaryAsync(p => p.Id);
+
+        foreach (var orderItem in order.OrderItems)
+        {
+            if (existingProducts.TryGetValue(orderItem.Product.Id, out var existingProduct))
+            {
+                existingProduct.Price = orderItem.Product.Price;
+                existingProduct.Quantity = orderItem.Product.Quantity;
+                existingProduct.Name = orderItem.Product.Name;
+
+                orderItem.Product = existingProduct;
+            }
+            else
+            {
+                _context.Products.Add(orderItem.Product);
+            }
+        }
+
         _context.Orders.Add(order);
         await _context.SaveChangesAsync(cancellationToken);
-
         return Result.Success(new CreateOrderResult(order.Id));
 
     }

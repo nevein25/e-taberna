@@ -42,29 +42,6 @@ public class RabbitMQMessageBus : IMessageBus, IAsyncDisposable
 
     }
 
-    private async Task CreateConnectionAsync()
-    {
-        ConnectionFactory factory = new ConnectionFactory // constructs IConnection instances
-        {
-            HostName = _options.HostName,
-            Password = _options.Password,
-            UserName = _options.UserName
-        };
-
-        _connection = await factory.CreateConnectionAsync();
-    }
-
-
-    private async Task EnsureConnectionAsync()
-    {
-        if (_connection is null || !_connection.IsOpen)
-            await CreateConnectionAsync();
-
-        if ((_channel is null || !_channel.IsOpen) && _connection is not null)
-            _channel = await _connection.CreateChannelAsync(); // The IConnection interface can then be used to open a channel:
-
-    }
-
     public async Task ConsumeFromQueueAsync(string queueName, Func<string, Task> onMessageReceived)
     {
         await EnsureConnectionAsync();
@@ -98,6 +75,88 @@ public class RabbitMQMessageBus : IMessageBus, IAsyncDisposable
         };
 
         await _channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer);
+    }
+    public async Task PublishToExchangeAsync<T>(T message, string exchangeName, string routingKey, string type)
+    {
+        await EnsureConnectionAsync();
+
+        if (_channel is null) throw new InvalidOperationException("Channel is not initialized");
+
+        byte[] body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
+
+        await _channel.ExchangeDeclareAsync(exchange: exchangeName, type: type, durable: true);
+
+        await _channel.BasicPublishAsync(
+            exchange: exchangeName,
+            routingKey: routingKey,
+            body: body
+        );
+    }
+
+    public async Task ConsumeFromExchangeAsync(string exchangeName, string queueName, string exchangeType, string routingKey, Func<string, Task> onMessageReceived)
+    {
+        await EnsureConnectionAsync();
+
+        if (_channel is null) throw new InvalidOperationException("Channel is not initialized");
+
+        await _channel.ExchangeDeclareAsync(exchange: exchangeName, type: exchangeType, durable: true);
+
+        await _channel.QueueDeclareAsync(
+            queue: queueName,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null
+        );
+
+        if (exchangeType == "fanout")
+            await _channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: "");
+
+        else
+            await _channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: routingKey);
+
+        var consumer = new AsyncEventingBasicConsumer(_channel);
+        consumer.ReceivedAsync += async (channel, eventArgs) =>
+        {
+            try
+            {
+                var body = eventArgs.Body.ToArray();
+                string message = Encoding.UTF8.GetString(body);
+
+                await onMessageReceived(message);
+
+                await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false);
+            }
+            catch
+            {
+                await _channel.BasicNackAsync(eventArgs.DeliveryTag, multiple: false, requeue: true);
+            }
+        };
+
+        await _channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer);
+    }
+
+    private async Task CreateConnectionAsync()
+    {
+        ConnectionFactory factory = new ConnectionFactory // constructs IConnection instances
+        {
+            HostName = _options.HostName,
+            Password = _options.Password,
+            UserName = _options.UserName
+        };
+
+        _connection = await factory.CreateConnectionAsync();
+    }
+
+
+    private async Task EnsureConnectionAsync()
+    {
+        if (_connection is null || !_connection.IsOpen)
+            await CreateConnectionAsync();
+
+        if ((_channel is null || !_channel.IsOpen) && _connection is not null)
+            _channel = await _connection.CreateChannelAsync(); // The IConnection interface can then be used to open a channel:
+
     }
 
     public async ValueTask DisposeAsync()

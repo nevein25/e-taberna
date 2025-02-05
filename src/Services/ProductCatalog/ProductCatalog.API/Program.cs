@@ -31,13 +31,3 @@ await seeder.SeedAsync();
 
 
 app.Run();
-
-/*TODO
- 
- - why mapster not workinng
- - revise the endpoints, (validation, what is missing)
- - is using context directly in th endpoint is te best praactise? if not what is? 
- - create get products endpoint
- - create diagram
- 
- */

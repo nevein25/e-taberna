@@ -67,9 +67,12 @@ public class ValidatePaymentCommandHandler : ICommandHandler<ValidatePaymentComm
             {
                 Id = o.Product.Id,
                 Quantity = o.Product.Quantity
-            }).ToList()
+            }).ToList(),
+            CustomerId = order.CustomerId
         };
 
-        await _messageBus.PublishToQueueAsync(orderPaidEvent, QueueNames.OrderPaymentSuccess);
+       // await _messageBus.PublishToQueueAsync(orderPaidEvent, QueueNames.OrderPaymentSuccess);
+        await _messageBus.PublishToExchangeAsync(orderPaidEvent, ExchangeNames.OrderEvents, "", "fanout");
+
     }
 }
