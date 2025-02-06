@@ -1,4 +1,5 @@
 ﻿using Auth.Application.ApplicationSettings;
+using Auth.Application.DTOs;
 using Auth.Application.Services.Token;
 using Auth.Domain.Model;
 using Microsoft.AspNetCore.Identity;
@@ -6,21 +7,24 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Auth.Infrastructure.Services.Token;
 public class TokenService : ITokenService
 {
     private readonly TokenSettings _tokenSettings;
+    private readonly RefreshTokenSettings _refershTokenSettings;
     private readonly UserManager<User> _userManager;
 
-    public TokenService(IOptions<TokenSettings> tokrnSettings, UserManager<User> userManager)
+    public TokenService(IOptions<TokenSettings> tokenSettings, IOptions<RefreshTokenSettings> refreshTokenSettings, UserManager<User> userManager)
     {
-        _tokenSettings = tokrnSettings.Value;
+        _tokenSettings = tokenSettings.Value;
+        _refershTokenSettings = refreshTokenSettings.Value;
         _userManager = userManager;
     }
 
-    public async Task<string> GenerateTokenAsync(User user, string Role)
+    public async Task<AuthToken> GenerateTokenAsync(User user, string Role)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenSettings.Key));
 
@@ -35,10 +39,11 @@ public class TokenService : ITokenService
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
+        var tokenExpiray = DateTime.Now.AddMinutes(_tokenSettings.ExpiryInMinutes);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddDays(_tokenSettings.ExpiryInDays),
+            Expires = tokenExpiray,
             SigningCredentials = creds,
             Audience = _tokenSettings.Audience,
             Issuer = _tokenSettings.Issuer
@@ -47,7 +52,20 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        return new AuthToken(tokenHandler.WriteToken(token), ExpiresOn: tokenExpiray);
+
+    }
+
+    public RefreshToken GenerateRefreshToken()
+    {
+      var refreshToken =  new RefreshToken
+        {
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
+            CreatedOn = DateTime.UtcNow,
+            ExpiresOn = DateTime.UtcNow.AddDays(_refershTokenSettings.ExpiryInDays)
+        };
+
+        return refreshToken;
     }
 }
 

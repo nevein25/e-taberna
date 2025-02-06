@@ -3,6 +3,7 @@
 namespace Auth.Application.Interfaces;
 public interface IAccountService
 {
-    Task<Respons<AuthResponseDto>> RegisterAsync(RegisterDto registerDto);
-    Task<Respons<AuthResponseDto>> LoginAsync(LoginDto loginDto);
+    Task<Response<AuthResponseDto>> RegisterAsync(RegisterDto registerDto);
+    Task<Response<AuthResponseDto>> LoginAsync(LoginDto loginDto);
+    Task<Response<AuthResponseDto>> RefreshTokenAsync(string token);
 }

@@ -23,143 +23,109 @@ public class AccountService : IAccountService
         _userFactoryResolver = userFactoryResolver;
         _roleManager = roleManager;
     }
-    public async Task<Respons<AuthResponseDto>> LoginAsync(LoginDto loginDto)
+    public async Task<Response<AuthResponseDto>> LoginAsync(LoginDto loginDto)
     {
-
-        var response = new Respons<AuthResponseDto>();
-
-        if (string.IsNullOrWhiteSpace(loginDto.Username))
-        {
-            response.Status = false;
-            response.Message = LoginMessages.InvalidLogin;
-            response.Errors.Add(RequiredFieldsMessages.UsernameRequired);
-            return response;
-        }
-
-        if (string.IsNullOrWhiteSpace(loginDto.Password))
-        {
-            response.Status = false;
-            response.Message = LoginMessages.InvalidLogin;
-            response.Errors.Add(RequiredFieldsMessages.PasswordRequired);
-            return response;
-        }
-
-
         User? user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
 
-        if (user == null)
-        {
-            response.Status = false;
-            response.Message = LoginMessages.InvalidLogin;
-            response.Errors.Add(LoginMessages.UserNotFound);
-            return response;
-        }
+        if (user is null)
+            return new Response<AuthResponseDto>(LoginMessages.InvalidLogin, LoginMessages.UserNotFound);
+
 
         var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
         if (!isPasswordValid)
-        {
-            response.Status = false;
-            response.Message = LoginMessages.InvalidLogin;
-            response.Errors.Add(LoginMessages.IncorrectPassword);
-            return response;
-        }
+            return new Response<AuthResponseDto>(LoginMessages.InvalidLogin, LoginMessages.IncorrectPassword);
+
 
         var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+        var authResponse = await GenerateAuthResponseAsync(user, role!);
 
-        var token = await _tokenService.GenerateTokenAsync(user, role!);
-        response.Status = true;
-        response.Message = LoginMessages.LoginSuccess;
-        response.Data = new AuthResponseDto(token);
-        return response;
+        return new Response<AuthResponseDto>(authResponse, LoginMessages.LoginSuccess);
     }
 
-    public async Task<Respons<AuthResponseDto>> RegisterAsync(RegisterDto registerDto)
+    public async Task<Response<AuthResponseDto>> RegisterAsync(RegisterDto registerDto)
     {
-        var response = new Respons<AuthResponseDto>();
 
-        if (string.IsNullOrWhiteSpace(registerDto.Username))
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors.Add(RequiredFieldsMessages.UsernameRequired);
-            return response;
-        }
-
-        if (string.IsNullOrWhiteSpace(registerDto.Password))
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors.Add(RequiredFieldsMessages.PasswordRequired);
-            return response;
-        }
-
-        if (string.IsNullOrWhiteSpace(registerDto.Email))
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors.Add(RequiredFieldsMessages.EmailRequired);
-            return response;
-        }
 
         if (await UserEmailExists(registerDto.Email))
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors.Add(RegistrationMessages.EmailTaken);
-            return response;
-        }
+            return new Response<AuthResponseDto>(RegistrationMessages.RegistrationFailed, RegistrationMessages.EmailTaken);
 
         if (await UserUsernameExists(registerDto.Username))
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors.Add(RegistrationMessages.UsernameTaken);
-            return response;
-        }
+            return new Response<AuthResponseDto>(RegistrationMessages.RegistrationFailed, RegistrationMessages.UsernameTaken);
+
 
         if (!(await _roleManager.RoleExistsAsync(registerDto.Role)) && registerDto.Role != Roles.Admin)
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors.Add(RegistrationMessages.RoleNotAllowed);
-            return response;
-        }
+            return new Response<AuthResponseDto>(RegistrationMessages.RegistrationFailed, RegistrationMessages.RoleNotAllowed);
 
         User user;
         var factory = _userFactoryResolver.GetFactory(registerDto.Role);
         user = factory.CreateUser(registerDto);
 
         var result = await _userManager.CreateAsync(user, registerDto.Password);
+
         if (!result.Succeeded)
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors = result.Errors.Select(e => e.Description).ToList();
-            return response;
-        }
+            return new Response<AuthResponseDto>(RegistrationMessages.RegistrationFailed, result.Errors.Select(e => e.Description).ToArray());
 
         var roleResult = await _userManager.AddToRoleAsync(user, registerDto.Role);
         if (!roleResult.Succeeded)
-        {
-            response.Status = false;
-            response.Message = RegistrationMessages.RegistrationFailed;
-            response.Errors = roleResult.Errors.Select(e => e.Description).ToList();
-            return response;
-        }
+            return new Response<AuthResponseDto>(RegistrationMessages.RegistrationFailed, roleResult.Errors.Select(e => e.Description).ToArray());
 
 
-
-        var token = await _tokenService.GenerateTokenAsync(user, registerDto.Role);
-        response.Status = true;
-        response.Message = RegistrationMessages.RegistrationSuccess;
-        response.Data = new AuthResponseDto(token);
-
-        return response;
+        var authResponse = await GenerateAuthResponseAsync(user, registerDto.Role);
+        return new Response<AuthResponseDto>(authResponse, RegistrationMessages.RegistrationSuccess);
     }
+
+    public async Task<Response<AuthResponseDto>> RefreshTokenAsync(string token)
+    {
+        var user = await _userManager.Users
+            .Where(u => u.RefreshTokens != null && u.RefreshTokens.Any(t => t.Token == token && t.RevokedOn == null && DateTime.UtcNow < t.ExpiresOn))
+            .SingleOrDefaultAsync();
+
+        if (user is null)
+            return new Response<AuthResponseDto>(GeneralMessages.InvalidToken);
+
+
+        var refreshToken = user.RefreshTokens!.SingleOrDefault(t => t.Token == token);
+        if (refreshToken is null || !refreshToken.IsActive)
+            return new Response<AuthResponseDto>(GeneralMessages.InvalidToken);
+
+
+        refreshToken.RevokedOn = DateTime.UtcNow;
+
+        var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+        var authResponse = await GenerateAuthResponseAsync(user, role!);
+
+        return new Response<AuthResponseDto>(authResponse, GeneralMessages.TokenRefreshed);
+
+    }
+
 
     private async Task<bool> UserEmailExists(string email) => await _userManager.Users.AnyAsync(u => u.Email == email.ToLower());
 
 
     private async Task<bool> UserUsernameExists(string username) => await _userManager.Users.AnyAsync(u => u.UserName == username);
+
+    private async Task<AuthResponseDto> GenerateAuthResponseAsync(User user, string role)
+    {
+        var authToken = await _tokenService.GenerateTokenAsync(user, role);
+        var refreshToken = await SaveRefreshTokenAsync(user);
+
+        return new AuthResponseDto(authToken.Token, authToken.ExpiresOn, refreshToken.Token, refreshToken.ExpiresOn);
+    }
+
+    private async Task<RefreshToken> SaveRefreshTokenAsync(User user)
+    {
+        var activeRefreshToken = user.RefreshTokens?.FirstOrDefault(t => t.IsActive);
+
+        if (activeRefreshToken is not null)
+            activeRefreshToken.RevokedOn = DateTime.UtcNow;
+
+        var newRefreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshTokens!.Add(newRefreshToken);
+
+        await _userManager.UpdateAsync(user);
+
+        return newRefreshToken;
+    }
 
 }

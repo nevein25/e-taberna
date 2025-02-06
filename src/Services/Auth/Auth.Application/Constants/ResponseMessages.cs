@@ -3,6 +3,8 @@ public static class GeneralMessages
 {
     public const string Success = "Request completed successfully.";
     public const string Failure = "Request failed. Please try again.";
+    public const string InvalidToken = "Token is invalid";
+    public const string TokenRefreshed = "TokenRefreshed";
 }
 
 public static class LoginMessages
@@ -22,9 +24,3 @@ public static class RegistrationMessages
     public const string RoleNotAllowed = "This role is not allowed.";
 }
 
-public static class RequiredFieldsMessages
-{
-    public const string UsernameRequired = "Username is required.";
-    public const string EmailRequired = "Email is required.";
-    public const string PasswordRequired = "Password is required.";
-}

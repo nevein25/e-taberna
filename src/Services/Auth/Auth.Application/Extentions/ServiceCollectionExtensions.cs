@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
     public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<TokenSettings>(configuration.GetSection("TokenSettings"));
+        services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
 
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<UserFactoryResolver>();

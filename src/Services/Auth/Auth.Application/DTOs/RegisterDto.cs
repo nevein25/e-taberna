@@ -1,2 +1,4 @@
-﻿namespace Auth.Application.DTOs;
-public record RegisterDto(string Username, string Email, string Password, string Role);
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Auth.Application.DTOs;
+public record RegisterDto([Required] string Username, [Required] string Email, [Required] string Password, [Required] string Role);

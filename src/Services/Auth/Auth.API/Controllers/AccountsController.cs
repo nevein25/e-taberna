@@ -38,4 +38,17 @@ public class AccountsController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto refreshTokenRequest)
+    {
+
+        var result = await _accountService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
+
+        if (result.Status)
+            return Ok(result);
+
+        return BadRequest(result);
+    }
+
 }
