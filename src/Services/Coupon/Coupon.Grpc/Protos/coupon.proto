@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option csharp_namespace = "Coupon.Grpc";
+
+package coupon; // optional
+
+
+
+service CouponProtoService {
+    rpc GetCoupon (GetCouponRequest) returns (CouponResponse);
+    rpc CreateCoupon (CreateCouponRequest) returns (CouponResponse);
+    rpc UpdateCoupon (UpdateCouponRequest) returns (CouponResponse);
+    rpc DeleteCoupon (DeleteCouponRequest) returns (DeleteCouponResponse);
+}
+
+message GetCouponRequest {
+	int32 id = 1;
+}
+
+message CreateCouponRequest {
+    string code = 1;
+    double discountPercentage = 2;
+} 
+
+message UpdateCouponRequest {
+    int32 id = 1;
+    string code = 2;
+    float discountPercentage = 3;
+} 
+
+
+message DeleteCouponRequest {
+    int32 id = 1;
+
+} 
+
+message DeleteCouponResponse{
+   	bool success = 1;
+
+} 
+
+message CouponResponse {
+    int32 id = 1;
+    string code = 2;
+    double discountPercentage = 3;
+    int32 sellerId = 4;
+}
+
+// change build action for this file to be protobuf compiler , service only
