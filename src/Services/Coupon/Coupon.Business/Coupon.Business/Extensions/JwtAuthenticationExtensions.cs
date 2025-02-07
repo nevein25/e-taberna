@@ -1,7 +1,9 @@
-﻿using Coupon.Grpc.Settings;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Coupon.DataAccess.Settings;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Coupon.Grpc.Extensions;
 

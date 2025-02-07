@@ -1,5 +1,7 @@
-﻿using Coupon.Grpc.Seeders;
-
+﻿
+using Coupon.DataAccess.Seeders;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 namespace Coupon.Grpc.Extensions;
 
 public static class ApplicationBuilderExtensions

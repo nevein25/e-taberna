@@ -1,4 +1,4 @@
-﻿namespace Coupon.Grpc.Seeders;
+﻿namespace Coupon.DataAccess.Seeders;
 
 public interface ISeeder
 {

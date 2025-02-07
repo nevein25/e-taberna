@@ -43,6 +43,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Coupon", "Coupon", "{8CB6F1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coupon.Grpc", "Services\Coupon\Coupon.Grpc\Coupon.Grpc.csproj", "{42BD7C76-1433-40E7-8B45-BCB58DFCF32B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coupon.Business", "Services\Coupon\Coupon.Business\Coupon.Business\Coupon.Business.csproj", "{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coupon.DataAccess", "Services\Coupon\Coupon.DataAccess\Coupon.DataAccess\Coupon.DataAccess.csproj", "{72DAAFF2-89AD-4524-AFA5-B7DC00523699}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +105,14 @@ Global
 		{42BD7C76-1433-40E7-8B45-BCB58DFCF32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42BD7C76-1433-40E7-8B45-BCB58DFCF32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42BD7C76-1433-40E7-8B45-BCB58DFCF32B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72DAAFF2-89AD-4524-AFA5-B7DC00523699}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72DAAFF2-89AD-4524-AFA5-B7DC00523699}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72DAAFF2-89AD-4524-AFA5-B7DC00523699}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72DAAFF2-89AD-4524-AFA5-B7DC00523699}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,5 +136,7 @@ Global
 		{1E27A7D5-55EA-4499-95F6-10414361986D} = {A1731EDA-FE28-4E17-B460-784B48450D1F}
 		{8CB6F183-F7CF-4154-8EA1-BB87E19A4D10} = {5953D33E-884B-4505-BB36-35A7AD283817}
 		{42BD7C76-1433-40E7-8B45-BCB58DFCF32B} = {8CB6F183-F7CF-4154-8EA1-BB87E19A4D10}
+		{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB} = {8CB6F183-F7CF-4154-8EA1-BB87E19A4D10}
+		{72DAAFF2-89AD-4524-AFA5-B7DC00523699} = {8CB6F183-F7CF-4154-8EA1-BB87E19A4D10}
 	EndGlobalSection
 EndGlobal

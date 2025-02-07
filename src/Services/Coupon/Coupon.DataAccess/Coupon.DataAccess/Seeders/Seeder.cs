@@ -1,14 +1,14 @@
-﻿using Coupon.Grpc.Persistence;
-using Coupon.Grpc.Presistance;
+﻿
+using Coupon.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coupon.Grpc.Seeders;
+namespace Coupon.DataAccess.Seeders;
 
 public class Seeder : ISeeder
 {
-    private readonly AppDbContext _context;
+    private readonly IAppDbContext _context;
 
-    public Seeder(AppDbContext context)
+    public Seeder(IAppDbContext context)
     {
         _context = context;
     }

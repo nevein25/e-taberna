@@ -1,4 +1,4 @@
-﻿namespace Coupon.Grpc.Settings;
+﻿namespace Coupon.DataAccess.Settings;
 
 public class TokenSettings
 {

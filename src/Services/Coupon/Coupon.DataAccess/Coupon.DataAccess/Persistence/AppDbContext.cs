@@ -1,8 +1,7 @@
-﻿using Coupon.Grpc.Models;
-using Coupon.Grpc.Persistence;
+﻿using Coupon.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coupon.Grpc.Presistance;
+namespace Coupon.DataAccess.Presistance;
 
 public class AppDbContext : DbContext, IAppDbContext
 {

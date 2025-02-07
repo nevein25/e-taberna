@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Coupon.Grpc.Migrations
+namespace Coupon.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class Coupon_SellerId_Added : Migration

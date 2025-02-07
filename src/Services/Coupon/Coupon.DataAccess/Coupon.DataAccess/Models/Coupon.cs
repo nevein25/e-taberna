@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Coupon.Grpc.Models;
+﻿
+namespace Coupon.DataAccess.Models;
 
 public class Coupon
 {
