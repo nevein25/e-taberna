@@ -8,6 +8,7 @@ using ShoppingCart.API.Behaviors;
 using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.Seeders;
+using ShoppingCart.API.ShoppingCart.CheckoutCart.OrderCreation;
 using ShoppingCart.API.ShoppingCart.DeleteCart;
 using ShoppingCart.API.ShoppingCart.ProductService;
 using System.Reflection;
@@ -39,10 +40,16 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
 
         var productUrl = configuration["ServiceUrls:ProductCatalogAPI"] ?? throw new Exception("Can not ProductCatalogAPI find in the appsettings");
+        var orderUrl = configuration["ServiceUrls:OrderAPI"] ?? throw new Exception("Can not OrderAPI find in the appsettings");
 
-        services.AddHttpClient<IProductApiService, ProductApiService>(client =>
+        services.AddHttpClient<IProductQueryService, ProductQueryService>(client =>
         {
             client.BaseAddress = new Uri(productUrl);
+        });
+
+        services.AddHttpClient<IOrderCreationService, OrderCreationService>(client =>
+        {
+            client.BaseAddress = new Uri(orderUrl);
         });
 
         services.Configure<RabbitMQConfigurations>(configuration.GetSection(nameof(RabbitMQConfigurations)));

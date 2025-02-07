@@ -20,9 +20,9 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
 {
     private readonly IAppDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IProductApiService _productService;
+    private readonly IProductQueryService _productService;
 
-    public UpdateCartHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService)
+    public UpdateCartHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, IProductQueryService productService)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

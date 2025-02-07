@@ -2,16 +2,15 @@
 
 namespace ShoppingCart.API.ShoppingCart.ProductService;
 
-public class ProductApiService : IProductApiService
+public class ProductQueryService : IProductQueryService
 {
-    public record GetProductQuantitiesRequest(List<int> ProductIds);
 
     public record GetProductByIdResponse(int Id, string Name, string Description, string ImageFile, decimal Price, string CategoryName, int Quantity);
 
     public record GetProductsByIdResponse(List<GetProductByIdResponse> Products);
 
     private readonly HttpClient _httpClient;
-    public ProductApiService(HttpClient httpClient)
+    public ProductQueryService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

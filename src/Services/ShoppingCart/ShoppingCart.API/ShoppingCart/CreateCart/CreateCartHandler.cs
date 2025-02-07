@@ -44,12 +44,12 @@ internal class CreateCartHandler : IRequestHandler<CreateCartCommand, CreateCart
 {
     private readonly IAppDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IProductApiService _productService;
+    private readonly IProductQueryService _productService;
     private readonly IMessageBus _messageBus;
 
     //private readonly IValidator<CreateCartCommand> _validator;
 
-    public CreateCartHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, IProductApiService productService, IMessageBus messageBus
+    public CreateCartHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, IProductQueryService productService, IMessageBus messageBus
                 /* , IValidator<CreateCartCommand> validator*/)
     {
         _context = context;
