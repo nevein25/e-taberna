@@ -1,11 +1,9 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.Exceptions;
 using ShoppingCart.API.Extentions;
 using ShoppingCart.API.Models;
 using ShoppingCart.API.Persistance;
-using ShoppingCart.API.Presestance;
 using ShoppingCart.API.ShoppingCart.ProductService;
 
 namespace ShoppingCart.API.ShoppingCart.UpdateCart;

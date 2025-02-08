@@ -10,6 +10,7 @@
 	<ItemGroup>
         <PackageReference Include="Carter" Version="8.2.1" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="MediatR" Version="12.4.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -23,5 +24,12 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Messaging\BuildingBlocks.Messaging.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Protobuf Include="..\..\Coupon\Coupon.Grpc\Protos\coupon.proto" GrpcServices="Client">
+	    <Link>Protos\coupon.proto</Link>
+	  </Protobuf>
 	</ItemGroup>
 </Project>

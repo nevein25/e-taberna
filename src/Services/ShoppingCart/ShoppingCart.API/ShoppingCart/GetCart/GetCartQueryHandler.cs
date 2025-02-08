@@ -8,7 +8,7 @@ namespace ShoppingCart.API.ShoppingCart.GetCart;
 
 public record GetCartQuery(int UserId) : IRequest<GetCartResult>;
 
-public record GetCartResult(List<GetCartItemResult> CartItems);
+public record GetCartResult(List<GetCartItemResult> CartItems, decimal TotalPrice);
 public record GetCartItemResult(int ProductId, string ProductName, decimal Price, int Quantity);
 public class GetCartQueryHandler : IRequestHandler<GetCartQuery, GetCartResult>
 {

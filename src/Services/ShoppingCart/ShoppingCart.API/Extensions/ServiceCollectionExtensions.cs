@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Messaging.Configurations;
 using BuildingBlocks.Messaging.MessageBuses;
 using Carter;
+using Coupon.Grpc;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.API.ApplicationSettings;
@@ -8,6 +9,7 @@ using ShoppingCart.API.Behaviors;
 using ShoppingCart.API.Persistance;
 using ShoppingCart.API.Presestance;
 using ShoppingCart.API.Seeders;
+using ShoppingCart.API.ShoppingCart.Coupon.CouponService;
 using ShoppingCart.API.ShoppingCart.DeleteCart;
 using ShoppingCart.API.ShoppingCart.ProductService;
 using System.Reflection;
@@ -52,5 +54,13 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<DeleteCartOnOrderPaidConsumer>();
 
         services.AddScoped<ICartDeletionService, CartDeletionService>();
+        services.AddScoped<ICouponGrpcClientService, CouponGrpcClientService>();
+
+        var couponUri = configuration["ServiceUrls:CouponGrpc"] ?? throw new Exception("Can not CouponGrpc find in the appsettings");
+
+        services.AddGrpcClient<CouponProtoService.CouponProtoServiceClient>(opt =>
+        {
+            opt.Address = new Uri(couponUri);
+        });
     }
 }

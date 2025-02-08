@@ -8,7 +8,7 @@ using ShoppingCart.API.Extentions;
 namespace ShoppingCart.API.ShoppingCart.GetCart;
 
 
-public record GetCartResponse(List<GetCartItemResponse> CartItems);
+public record GetCartResponse(List<GetCartItemResponse> CartItems,  decimal TotalPrice);
 public record GetCartItemResponse(int ProductId, string ProductName, decimal Price, int Quantity);
 public class GetCartEndpoint : ICarterModule
 {

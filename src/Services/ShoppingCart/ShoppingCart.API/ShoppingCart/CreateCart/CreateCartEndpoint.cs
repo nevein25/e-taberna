@@ -21,8 +21,7 @@ public class CreateCartEndpoint : ICarterModule
         {
             CreateCartCommand createCartCommand = cart.Adapt<CreateCartCommand>();
 
-            // if validation fail,  validation exception will be thrown and not proceeding to actual business logic., before reaching handler
-            CreateCartResult result = await sender.Send(createCartCommand);// triggering the handler
+            CreateCartResult result = await sender.Send(createCartCommand);
 
             CreateCartResponse response = result.Adapt<CreateCartResponse>();
 
@@ -32,6 +31,6 @@ public class CreateCartEndpoint : ICarterModule
         .Produces<CreateCartResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Create Cart")
-        .WithDescription("Create Cart"); ;
+        .WithDescription("Create Cart");
     }
 }
