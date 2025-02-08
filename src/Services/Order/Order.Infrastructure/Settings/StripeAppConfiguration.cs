@@ -1,5 +1,5 @@
 ﻿namespace Order.Infrastructure.Settings;
-public class StripeAppConfigration
+public class StripeAppConfiguration
 {
     public string SecretKey { get; set; } = default!;
 }

@@ -7,11 +7,13 @@ using Coupon.Business.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var configuration = builder.Configuration;
 builder.Services.AddGrpc();
 builder.Services.AddPresentation();
-builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddDataAccessServices(builder.Configuration);
-builder.Services.AddBusiness();
+builder.Services.AddJwtAuthentication(configuration);
+builder.Services.AddDataAccessServices(configuration);
+builder.Services.AddBusiness(configuration);
 
 var app = builder.Build();
 await app.UseMigrationsAsync();

@@ -21,8 +21,8 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
 
         var stripeSection = config.GetSection("StripeConfiguration");
-        services.Configure<StripeAppConfigration>(stripeSection);
-        var tokenCon = stripeSection.Get<StripeAppConfigration>() ?? throw new Exception("Can not find StripeConfiguration in the appsettings");
+        services.Configure<StripeAppConfiguration>(stripeSection);
+        var tokenCon = stripeSection.Get<StripeAppConfiguration>() ?? throw new Exception("Can not find StripeConfiguration in the appsettings");
     
         StripeConfiguration.ApiKey = tokenCon.SecretKey;
         services.AddScoped<IPaymentService, StripeService>();

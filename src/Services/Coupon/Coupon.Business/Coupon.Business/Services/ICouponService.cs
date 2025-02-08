@@ -10,5 +10,5 @@ public interface ICouponService
 
     Task<CouponDto?> UpdateCouponAsync(CouponDto request, int sellerId);
 
-    Task<bool> DeleteCouponAsync(int couponId, int sellerId);
+    Task<bool> DeleteCouponAsync(int Id, int sellerId);
 }
