@@ -19,17 +19,22 @@ public class StripeService : IPaymentService
     }
     public StripeResponseDto CreateSession(StripeRequestDto stripeRequest)
     {
-        var options = BuildSessionOptions(stripeRequest);
+            var options = BuildSessionOptions(stripeRequest);
 
-        AddLineItemsToSession(options, stripeRequest.Order.OrderItems);
+            if (stripeRequest.Order.DiscountCode is not null)
+                options.Discounts = BuildSessionDiscountOptions(stripeRequest);
 
-        Session session = _sessionService.Create(options);
+            AddLineItemsToSession(options, stripeRequest.Order.OrderItems);
 
-        return new StripeResponseDto()
-        {
-            SessionId = session.Id,
-            SessionUrl = session.Url,
-        };
+            Session session = _sessionService.Create(options);
+
+            return new StripeResponseDto()
+            {
+                SessionId = session.Id,
+                SessionUrl = session.Url,
+            };
+        }
+
     }
     public PaymentIntentDto GetPaymentIntent(string stripeSessionId)
     {
@@ -42,10 +47,22 @@ public class StripeService : IPaymentService
     {
         return new SessionCreateOptions
         {
+            PaymentMethodTypes = new List<string> { "card" },
             SuccessUrl = stripeRequest.ApprovedUrl,
             CancelUrl = stripeRequest.CancelUrl,
             LineItems = new List<SessionLineItemOptions>(),
             Mode = "payment",
+        };
+    }
+
+    private List<SessionDiscountOptions> BuildSessionDiscountOptions(StripeRequestDto stripeRequest)
+    {
+        return new List<SessionDiscountOptions>
+        {
+            new SessionDiscountOptions()
+            {
+                Coupon = stripeRequest.Order.DiscountCode
+            }
         };
     }
     private void AddLineItemsToSession(SessionCreateOptions options, List<OrderItemRequest> orderItems)

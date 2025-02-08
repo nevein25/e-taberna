@@ -21,7 +21,7 @@ builder.AddJwtAuthentication();
 
 var app = builder.Build();
 
-
+await app.UseMigrationsAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

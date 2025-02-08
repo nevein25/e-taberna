@@ -13,11 +13,13 @@ public class Order
     public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.RequiresPaymentMethod;
     public DateTime OrderTime { get; set; }
 
-
+    public string? DiscountCode { get; set; }
+    public double DiscountPercentage { get; set; }
     public List<OrderItem> OrderItems { get; set; } = [];
+
     public decimal TotalPrice
     {
-        get => OrderItems.Sum(oi => oi.Product.Price * oi.Product.Quantity);
+        get => OrderItems.Sum(oi => oi.Product.Price * oi.Product.Quantity) * (1 - ((decimal)DiscountPercentage / 100));
     }
 
     public string? StripePaymentIntentId { get; set; } // The payment intent ID gets generated once the checkout is done.

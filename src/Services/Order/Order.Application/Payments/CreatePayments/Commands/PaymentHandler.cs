@@ -34,7 +34,6 @@ public class PaymentHandler : ICommandHandler<PaymentCommand, PaymentResponseDto
             CancelUrl = command.Payment.CancelUrl,
             Order = order.Adapt<OrderRequest>()
         };
-
         var stripeResponse = _paymentService.CreateSession(stripeRequest);
 
         order.StripeSessionId = stripeResponse.SessionId;
