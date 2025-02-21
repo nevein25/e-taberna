@@ -7,9 +7,9 @@ using ProductCatalog.API.Persistance;
 
 namespace ProductCatalog.API.Products.GetProductsById;
 
-public record GetProductByIdResponse(int Id, string Name, string Description, string ImageFile, decimal Price, string CategoryName, int Quantity);
+public record GetProductById(int Id, string Name, string Description, string ImageFile, decimal Price, string CategoryName, int Quantity);
 
-public record GetProductsByIdResponse(List<GetProductByIdResponse> Products);
+public record GetProductsByIdResponse(List<GetProductById> Products);
 
 
 public class GetProductsByIdEndpoint : IEndpoint

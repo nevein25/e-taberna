@@ -22,7 +22,7 @@ public class GetProductsByIdHandler
         if (!products.Any())
             return null;
 
-        var productResponses = products.Select(product => product.Adapt<GetProductByIdResponse>()).ToList();
+        var productResponses = products.Select(product => product.Adapt<GetProductById>()).ToList();
         return new GetProductsByIdResponse(productResponses);
     }
 }
