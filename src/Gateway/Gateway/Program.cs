@@ -28,3 +28,10 @@ if (app.Environment.IsDevelopment())
 await app.UseOcelot();
 
 app.Run();
+
+
+/*
+ add authentication to Ocelot. cause  we have to add it is from the web project when we will be calling the Gateway.
+It needs to pass the JWT tokens to the individual web servers.
+Only then the API will return back response.
+ */

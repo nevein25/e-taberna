@@ -12,7 +12,7 @@ public class DeleteCartEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender) =>
+        app.MapDelete("/api/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender) =>
         {
             var result = await sender.Send(new DeleteCartCommand());
 

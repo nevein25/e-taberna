@@ -42,7 +42,7 @@ public class UpdateCartEndpoint : ICarterModule
 
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut("/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender, UpdateCartRequest cart) =>
+        app.MapPut("/api/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender, UpdateCartRequest cart) =>
         {
             UpdateCartCommand updateCartCommand = cart.Adapt<UpdateCartCommand>();
 
