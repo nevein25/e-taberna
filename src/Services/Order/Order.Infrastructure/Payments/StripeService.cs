@@ -80,7 +80,7 @@ public class StripeService : IPaymentService
                         Name = item.Product.Name
                     }
                 },
-                Quantity = item.Product.Quantity
+                Quantity = item.Quantity
             };
 
             options.LineItems.Add(sessionLineItem);

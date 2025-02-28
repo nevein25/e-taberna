@@ -66,7 +66,7 @@ public class ValidatePaymentCommandHandler : ICommandHandler<ValidatePaymentComm
             Products = order.OrderItems.Select(o => new PaidProduct
             {
                 Id = o.Product.Id,
-                Quantity = o.Product.Quantity
+                Quantity = o.Quantity
             }).ToList(),
             CustomerId = order.CustomerId
         };

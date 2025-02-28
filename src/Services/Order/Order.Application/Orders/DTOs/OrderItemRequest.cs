@@ -3,10 +3,11 @@
 public class OrderItemRequest
 {
     public ProductRequest Product { get; set; } = new();
+    public int Quantity { get; set; }
 
     public decimal TotalPrice
     {
-        get => Product.Price * Product.Quantity;
+        get => Product.Price * Quantity;
     }
 }
 

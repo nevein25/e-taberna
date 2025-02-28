@@ -26,7 +26,7 @@ public class CreateOrderHandler : ICommandHandler<CreateOrderCommand, CreateOrde
             return Result.Failure<CreateOrderResult>(Error.NullValue);
 
 
-        var order = command.Order.Adapt<Order.Domain.Models.Order>();
+        var order = command.Order.Adapt<Domain.Models.Order>();
 
 
         var productIds = order.OrderItems.Select(oi => oi.Product.Id).ToList();

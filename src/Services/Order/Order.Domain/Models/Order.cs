@@ -19,7 +19,7 @@ public class Order
 
     public decimal TotalPrice
     {
-        get => OrderItems.Sum(oi => oi.Product.Price * oi.Product.Quantity) * (1 - ((decimal)DiscountPercentage / 100));
+        get => OrderItems.Sum(oi => oi.Product.Price * oi.Quantity) * (1 - ((decimal)DiscountPercentage / 100));
     }
 
     public string? StripePaymentIntentId { get; set; } // The payment intent ID gets generated once the checkout is done.
