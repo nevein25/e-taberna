@@ -20,7 +20,7 @@ public class CreateProductEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/products", [Authorize(Roles = Roles.Seller)] async (CreateProductRequest createProduct, CreateProductHandler handler,
+        app.MapPost("/products", [Authorize(Roles = Roles.Seller)] async (CreateProductRequest createProduct, CreateProductHandler handler,
                                             IValidator<CreateProductRequest> validator, ClaimsPrincipal user) =>
         {
             var validationResult = await validator.ValidateAsync(createProduct);

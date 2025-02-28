@@ -1,9 +1,5 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProductCatalog.API.Endpoints;
+﻿using ProductCatalog.API.Endpoints;
 using ProductCatalog.API.Models;
-using ProductCatalog.API.Persistance;
 
 namespace ProductCatalog.API.Products.GetProductsById;
 
@@ -16,7 +12,7 @@ public class GetProductsByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/products", async (int[] ids, GetProductsByIdHandler handler) =>
+        app.MapGet("/products", async (int[] ids, GetProductsByIdHandler handler) =>
         {
             var response = await handler.Handle(ids);
             return response?.Products.Any() == true

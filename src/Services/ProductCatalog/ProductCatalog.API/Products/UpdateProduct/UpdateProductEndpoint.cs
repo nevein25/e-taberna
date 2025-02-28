@@ -1,13 +1,9 @@
-﻿using Azure.Core;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 using ProductCatalog.API.Constants;
 using ProductCatalog.API.Endpoints;
 using ProductCatalog.API.Extentions;
 using ProductCatalog.API.Models;
-using ProductCatalog.API.Persistance;
 using System.Security.Claims;
 
 namespace ProductCatalog.API.Products.UpdateProduct;
@@ -19,7 +15,7 @@ public class UpdateProductEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("api/products/{id}", [Authorize(Roles = Roles.Seller)] async (int id, UpdateProductRequest updateProductRequest,
+        app.MapPut("/products/{id}", [Authorize(Roles = Roles.Seller)] async (int id, UpdateProductRequest updateProductRequest,
                                                  IValidator<UpdateProductRequest> validator,
                                                 ClaimsPrincipal user, UpdateProductHandler handler) =>
         {
