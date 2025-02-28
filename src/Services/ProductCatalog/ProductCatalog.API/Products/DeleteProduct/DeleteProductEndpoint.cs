@@ -15,7 +15,7 @@ public class DeleteProductEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("api/products/{id}", [Authorize(Roles = Roles.Seller)] async (int id, DeleteProductHandler handler, ClaimsPrincipal user) =>
+        app.MapDelete("/products/{id}", [Authorize(Roles = Roles.Seller)] async (int id, DeleteProductHandler handler, ClaimsPrincipal user) =>
         {
 
             int? userId = user.GetLoggedInUserId();

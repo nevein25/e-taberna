@@ -20,7 +20,7 @@ public class ProductApiService : IProductApiService
     {
         var queryString = string.Join("&", productsId.Select(id => $"ids={id}"));
 
-        var response = await _httpClient.GetAsync($"api/products?{queryString}");
+        var response = await _httpClient.GetAsync($"/products?{queryString}");
 
 
         if (response.StatusCode == HttpStatusCode.NotFound) return null;

@@ -19,23 +19,23 @@ public class StripeService : IPaymentService
     }
     public StripeResponseDto CreateSession(StripeRequestDto stripeRequest)
     {
-            var options = BuildSessionOptions(stripeRequest);
+        var options = BuildSessionOptions(stripeRequest);
 
-            if (stripeRequest.Order.DiscountCode is not null)
-                options.Discounts = BuildSessionDiscountOptions(stripeRequest);
+        if (stripeRequest.Order.DiscountCode is not null)
+            options.Discounts = BuildSessionDiscountOptions(stripeRequest);
 
-            AddLineItemsToSession(options, stripeRequest.Order.OrderItems);
+        AddLineItemsToSession(options, stripeRequest.Order.OrderItems);
 
-            Session session = _sessionService.Create(options);
+        Session session = _sessionService.Create(options);
 
-            return new StripeResponseDto()
-            {
-                SessionId = session.Id,
-                SessionUrl = session.Url,
-            };
-        }
-
+        return new StripeResponseDto()
+        {
+            SessionId = session.Id,
+            SessionUrl = session.Url,
+        };
     }
+
+
     public PaymentIntentDto GetPaymentIntent(string stripeSessionId)
     {
         Session session = _sessionService.Get(stripeSessionId);

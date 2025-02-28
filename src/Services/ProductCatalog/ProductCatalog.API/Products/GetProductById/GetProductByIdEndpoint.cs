@@ -13,7 +13,7 @@ public class GetProductByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/products/{id}", async (int id, GetProductByIdHandler handler) =>
+        app.MapGet("/products/{id}", async (int id, GetProductByIdHandler handler) =>
         {
             var response = await handler.Handle(id);
             return response is null

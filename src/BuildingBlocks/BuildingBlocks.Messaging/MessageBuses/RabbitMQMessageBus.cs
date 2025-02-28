@@ -26,9 +26,9 @@ public class RabbitMQMessageBus : IMessageBus, IAsyncDisposable
 
         await _channel.QueueDeclareAsync( //ensures that the queue exists. If it doesn't, it will be created with the specified parameters
          queue: queueName,
-            durable: durableQueue,
-            exclusive: false,
-            autoDelete: false,
+            durable: durableQueue, // survive a broker restart
+            exclusive: false, // if used by only one connection
+            autoDelete: false, // auto delete when last consumer unsub
             arguments: null
         );
 
@@ -61,16 +61,18 @@ public class RabbitMQMessageBus : IMessageBus, IAsyncDisposable
         {
             try
             {
-                var body = eventArgs.Body.ToArray();
+                byte[] body = eventArgs.Body.ToArray();
                 string message = Encoding.UTF8.GetString(body);
 
                 await onMessageReceived(message);
 
-                await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false);
+                await _channel.BasicAckAsync(eventArgs.DeliveryTag, //  unique identifier for the message
+                                                        multiple: false); // false:  Acknowledges only this message, true:  Acknowledges this and all previous unacknowledged messages
             }
             catch
             {
-                await _channel.BasicNackAsync(eventArgs.DeliveryTag, multiple: false, requeue: true);
+                await _channel.BasicNackAsync(eventArgs.DeliveryTag, multiple: false,
+                                             requeue: true); // Puts the message back into the queue for another attempt.
             }
         };
 

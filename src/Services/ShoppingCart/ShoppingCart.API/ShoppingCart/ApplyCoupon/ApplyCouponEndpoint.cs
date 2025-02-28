@@ -27,7 +27,7 @@ public class ApplyCouponEndpoint : ICarterModule
 
             var response = result.Adapt<ApplyCouponResponse>();
 
-            return Results.Created($"/carts/coupon", response);
+            return Results.Created($"/api/carts/coupon", response);
         })
         .WithName("Apply Coupon")
         .Produces<ApplyCouponResponse>(StatusCodes.Status201Created)

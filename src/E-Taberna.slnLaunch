@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "Gateway + Auth + Order",
+    "Projects": [
+      {
+        "Path": "Gateway\\Gateway\\Gateway.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Order\\Order.API\\Order.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Services\\Auth\\Auth.API\\Auth.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

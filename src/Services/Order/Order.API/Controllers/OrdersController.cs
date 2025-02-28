@@ -10,7 +10,7 @@ using Order.Application.Payments.ValidatePayments.DTOs;
 using Order.SharedKernel.Messaging;
 
 namespace Order.API.Controllers;
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 
 public class OrdersController : ControllerBase
