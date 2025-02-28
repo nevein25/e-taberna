@@ -3,7 +3,7 @@ using Auth.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.API.Controllers;
-[Route("api/Accounts")]
+[Route("/Accounts")]
 [ApiController]
 public class AccountsController : ControllerBase
 {
