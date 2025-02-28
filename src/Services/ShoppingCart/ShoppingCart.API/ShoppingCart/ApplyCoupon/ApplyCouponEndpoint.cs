@@ -16,7 +16,7 @@ public class ApplyCouponEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/carts/coupon", [Authorize(Roles = Roles.Customer)] async (ISender sender, ApplyCouponRequest applyCouponRequest, IHttpContextAccessor httpContextAccessor) =>
+        app.MapPost("/carts/coupon", [Authorize(Roles = Roles.Customer)] async (ISender sender, ApplyCouponRequest applyCouponRequest, IHttpContextAccessor httpContextAccessor) =>
         {
             var userId = httpContextAccessor.GetLoggedInUserId();
             if (userId is null) return Results.Unauthorized();

@@ -14,7 +14,7 @@ public class GetCartEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender, IHttpContextAccessor httpContextAccessor) =>
+        app.MapGet("/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender, IHttpContextAccessor httpContextAccessor) =>
         {
             var userId = httpContextAccessor.GetLoggedInUserId();
             if (userId is null) return Results.BadRequest();

@@ -17,7 +17,7 @@ public class CreateCartEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender, CreateCartRequest cart, ClaimsPrincipal user) =>
+        app.MapPost("/carts", [Authorize(Roles = Roles.Customer)] async (ISender sender, CreateCartRequest cart, ClaimsPrincipal user) =>
         {
             CreateCartCommand createCartCommand = cart.Adapt<CreateCartCommand>();
 
