@@ -10,7 +10,7 @@ This service follows the **3-tier architecture**:
 
 
 <p align="center">
-  <img src="../../../assets/diagrams/coupon-architecture.png" alt="Coupon Service Architecture" width="500"/>
+  <img src="../../../assets/diagrams/coupon-architecture.png" alt="Coupon Service Architecture" width="600"/>
 </p>
 
 

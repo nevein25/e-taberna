@@ -10,7 +10,7 @@ This service follows the **Vertical Slice Architecture**, ensuring that each fea
 
 
 <p align="center">
-  <img src="../../../assets/diagrams/product-catalogservice-architecture.png" alt="Order Service Architecture" width="500"/>
+  <img src="../../../assets/diagrams/product-catalogservice-architecture.png" alt="Order Service Architecture" width="600"/>
 </p>
 
 

@@ -9,7 +9,7 @@ The **ShoppingCart Service** handles cart management in **e-Taberna**. It follow
 This service follows the **Vertical Slice Architecture**, ensuring that each feature is encapsulated independently.
 
 <p align="center">
-  <img src="../../../assets/diagrams/shopping-cart-architecture.png" alt="ShoppingCart Service Architecture" width="550"/>
+  <img src="../../../assets/diagrams/shopping-cart-architecture.png" alt="ShoppingCart Service Architecture" width="600"/>
 </p>
 
 
