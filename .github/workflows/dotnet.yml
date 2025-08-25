@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "nevein25-patch-1", "main" ]
   pull_request:
-    branches: [ "nevein25-patch-1" "main" ]
+    branches: [ "nevein25-patch-1", "main" ]
 
 jobs:
   build:
@@ -64,4 +64,4 @@ jobs:
           dotnet restore src/E-Taberna.sln
           dotnet build src/E-Taberna.sln --configuration Release --no-incremental
           dotnet test src/E-Taberna.sln --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
