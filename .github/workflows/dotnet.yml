@@ -2,9 +2,9 @@ name: SonarQube
 
 on:
   push:
-    branches: [ "nevein25-patch-1" ]
+    branches: [ "nevein25-patch-1", "main" ]
   pull_request:
-    branches: [ "nevein25-patch-1" ]
+    branches: [ "nevein25-patch-1" "main" ]
 
 jobs:
   build:
