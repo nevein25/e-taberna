@@ -63,5 +63,6 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"nevein25_e-taberna" /o:"nevein25" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
           dotnet restore src/E-Taberna.sln
           dotnet build src/E-Taberna.sln --configuration Release --no-incremental
-          dotnet test src/E-Taberna.sln --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          dotnet test src/E-Taberna.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover --logger trx
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
