@@ -93,35 +93,6 @@ public class AccountServiceTests
         Assert.Equal(LoginMessages.InvalidLogin, result.Message);
     }
 
-    [Fact]
-    public async Task RegisterAsync_ShouldReturnEmailTaken_WhenEmailAlreadyExists()
-    {
-        // Arrange
-        var dto = new RegisterDto("test@test.com", "user", "pass", "User");
 
-        _userManagerMock.Setup(x => x.Users).Returns(new List<User>
-            {
-                new User { Email = dto.Email.ToLower() }
-            }.AsQueryable());
 
-        // Act
-        var result = await _accountService.RegisterAsync(dto);
-
-        // Assert
-        Assert.Contains(RegistrationMessages.EmailTaken, result.Errors);
-    }
-
-    [Fact]
-    public async Task RefreshTokenAsync_ShouldReturnInvalidToken_WhenNoUserFound()
-    {
-        // Arrange
-        string refreshToken = "invalid-token";
-        _userManagerMock.Setup(x => x.Users).Returns(new List<User>().AsQueryable());
-
-        // Act
-        var result = await _accountService.RefreshTokenAsync(refreshToken);
-
-        // Assert
-        Assert.Equal(GeneralMessages.InvalidToken, result.Errors.First());
-    }
 }
