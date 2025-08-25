@@ -51,6 +51,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{FDDB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarpGateway", "Gateway\YarpGateway\YarpGateway.csproj", "{56527D2C-A182-4B6E-AE56-8265DB43F299}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Application.Tests", "Services\Auth\Tests\Auth.Application.Tests\Auth.Application.Tests.csproj", "{D66E0C78-09A7-47CF-B119-5387F7EDBB13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +125,10 @@ Global
 		{56527D2C-A182-4B6E-AE56-8265DB43F299}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56527D2C-A182-4B6E-AE56-8265DB43F299}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56527D2C-A182-4B6E-AE56-8265DB43F299}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D66E0C78-09A7-47CF-B119-5387F7EDBB13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D66E0C78-09A7-47CF-B119-5387F7EDBB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D66E0C78-09A7-47CF-B119-5387F7EDBB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D66E0C78-09A7-47CF-B119-5387F7EDBB13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +155,8 @@ Global
 		{53A93EA8-4F7C-40EB-B1FE-A98028F79ADB} = {8CB6F183-F7CF-4154-8EA1-BB87E19A4D10}
 		{72DAAFF2-89AD-4524-AFA5-B7DC00523699} = {8CB6F183-F7CF-4154-8EA1-BB87E19A4D10}
 		{56527D2C-A182-4B6E-AE56-8265DB43F299} = {FDDBA07E-8C42-4D49-B837-8B1F5DBBAC29}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {FF01610A-FE53-4C49-8A24-274BACAC7F8E}
+		{D66E0C78-09A7-47CF-B119-5387F7EDBB13} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC8E7A0B-8981-495B-8C59-D25D1402C2D5}

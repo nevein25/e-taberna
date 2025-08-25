@@ -25,7 +25,7 @@ public class AccountService : IAccountService
     }
     public async Task<Response<AuthResponseDto>> LoginAsync(LoginDto loginDto)
     {
-        User? user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
+        User? user =  _userManager.Users.SingleOrDefault(u => u.UserName == loginDto.Username);
 
         if (user is null)
             return new Response<AuthResponseDto>(LoginMessages.InvalidLogin, LoginMessages.UserNotFound);
@@ -77,9 +77,9 @@ public class AccountService : IAccountService
 
     public async Task<Response<AuthResponseDto>> RefreshTokenAsync(string token)
     {
-        var user = await _userManager.Users
+        var user =  _userManager.Users
             .Where(u => u.RefreshTokens != null && u.RefreshTokens.Any(t => t.Token == token && t.RevokedOn == null && DateTime.UtcNow < t.ExpiresOn))
-            .SingleOrDefaultAsync();
+            .SingleOrDefault();
 
         if (user is null)
             return new Response<AuthResponseDto>(GeneralMessages.InvalidToken);
